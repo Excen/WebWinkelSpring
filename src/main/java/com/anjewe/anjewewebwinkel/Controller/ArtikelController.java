@@ -2,19 +2,12 @@
 package com.anjewe.anjewewebwinkel.Controller;
 
 
-
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
-import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoInterface;
 import com.anjewe.anjewewebwinkel.DAOs.ArtikelDao;
-import com.anjewe.anjewewebwinkel.Helpers.ApplicationContextConfig;
-import com.anjewe.anjewewebwinkel.Helpers.HibernateSessionFactory;
 import com.anjewe.anjewewebwinkel.View.ArtikelView;
 import com.anjewe.anjewewebwinkel.POJO.Artikel;
-import com.anjewe.anjewewebwinkel.POJO.Bestelling;
 import com.anjewe.anjewewebwinkel.View.BestellingView;
 import java.util.ArrayList;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

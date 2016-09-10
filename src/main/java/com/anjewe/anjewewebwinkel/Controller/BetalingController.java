@@ -4,13 +4,10 @@
 package com.anjewe.anjewewebwinkel.Controller;
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
-import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoInterface;
 import com.anjewe.anjewewebwinkel.DAOs.BetaalwijzeDao;
 import com.anjewe.anjewewebwinkel.DAOs.BetalingDao;
 import com.anjewe.anjewewebwinkel.DAOs.FactuurDao;
 import com.anjewe.anjewewebwinkel.Helpers.ApplicationContextConfig;
-import com.anjewe.anjewewebwinkel.Helpers.HibernateSessionFactory;
-import com.anjewe.anjewewebwinkel.POJO.Bestelling;
 import com.anjewe.anjewewebwinkel.POJO.Betaalwijze;
 import com.anjewe.anjewewebwinkel.POJO.Betaling;
 import com.anjewe.anjewewebwinkel.POJO.Factuur;
@@ -39,11 +36,16 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
     GenericDaoImpl <Betaling, Long> betalingDao; 
     GenericDaoImpl<Factuur, Long> factuurDao ;
     GenericDaoImpl<Betaalwijze, Long> betaalwijzeDao;
+    GenericDaoImpl <Klant, Long> klantDao;
     
     Betaling betaling; 
     Klant klant; 
     Factuur factuur; 
     Betaalwijze betaalwijze; 
+    Betaling gewijzigdeBetaling; 
+    boolean gewijzigd;
+    Long betalingId;
+    int betaalw;
     // int Id - String betaalwijze - String[] betaalWijzes = {"GoogleWallet","iDeal","Creditcard","PayPal","MoneyBookers","Natura"};
     
     
@@ -67,31 +69,21 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
             case 4: 
                 verwijderenVanBetaling();
                 break; 
-            //case 5:
-                // 
             case 5:
                 terugNaarHoofdMenu();
                 break;            
             default: 
                 System.out.println("Deze optie is niet beschikbaar.");
-                break;            
+                break;        
             
         }                
-    }
-        
+    }        
     
         
     public Betaling createBetaling(Long factuurId){
         
-        betaling = new Betaling();  
-        factuur = new Factuur();
-        factuurDao = new FactuurDao();
-         betaalwijzeDao = new BetaalwijzeDao();
-        
-        // klantId komt bij factuur vandaan
-        klant = new Klant();
         Date betaaldatum; 
-        int betaalw = betalingView.kiesBetaalWijze();
+        betaalw = betalingView.kiesBetaalWijze();
         //EnumMap bw = new EnumMap(Betaalwijze.class);
         
         switch (betaalw){
@@ -111,20 +103,17 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
                  betaalwijze = Betaalwijze.CREDITCARD;
                 break;   
             default:
-                return null;         
-                
-        }
-        
+                return null; 
+        }        
         
         String betalingsGegevens = betalingView.voegBetalingsGevensToe(); 
         // factuur en betaling gekoppeld, begint bij factuur
         
-        factuur = (Factuur) session.get(Factuur.class, factuurId);
-        session.getTransaction().commit();
+        factuur = (Factuur) factuurDao.readById(factuurId);
         klant = factuur.getKlant();
         long klantId = klant.getId();
         
-        klant = (Klant) session.get(Klant.class, klantId);        
+        klant = (Klant) klantDao.readById(klantId);        
         
         betaling.setBetaalwijze(betaalwijze);
         betaling.setBetaaldatum(new Date());        
@@ -135,8 +124,8 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
         return betaling;          
     }
     
-    public void voegNieuweBetalingToe(){
-         
+    
+    public void voegNieuweBetalingToe(){         
         
         System.out.println("U gaat een betaling toevoegen, behorende bij welk factuurId?");
         long factuurId = factuurView.voerFactuurIdIn();
@@ -144,17 +133,13 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
         voegNieuweBetalingToe(factuurId);
     }
     
+    
     public long voegNieuweBetalingToe(Long factuurId){
-          
-        session = getSession();
-        betalingDao = new BetalingDao(); 
         
         System.out.println("U gaat een betaling toevoegen. Voer de gegevens in.");
         betaling = createBetaling(factuurId); 
         
-        session = getSession();
-        Long betalingId = (Long)betalingDao.insert(betaling);            
-        session.getTransaction().commit();
+        betalingId = (Long)betalingDao.insert(betaling);   
         
         System.out.println("U heeft de gegevens van de betaling toegevoegd met betalingId: " 
             + betalingId); 
@@ -168,24 +153,18 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
     
      private void zoekBetalingGegevens() {
      
-        betalingDao = new BetalingDao();
-        betaling = new Betaling();         
-	session = getSession();
-        
         int input = betalingView.menuBetalingZoeken();
         switch (input){
                 case 1:  // naar 1 betaling zoeken
-                     long betalingId = betalingView.voerBetalingIdIn();
+                     betalingId = betalingView.voerBetalingIdIn();
                         
                         betaling = (Betaling) betalingDao.readById(betalingId);
-                        session.getTransaction().commit();
                         betalingView.printBetalingOverzicht(betaling);                     
                     break; // einde naar 1 betaling zoeken
                 case 2: // alle betalingen zoeken
                     
                     ArrayList <Betaling> betalingenLijst = 
                             (ArrayList <Betaling>) betalingDao.readAll(Betaling.class);
-                    session.getTransaction().commit();
                     System.out.println("Alle artikelen in het bestand");
                     betalingView.printBetalingLijst(betalingenLijst); 
                         break; 
@@ -194,44 +173,28 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
                 default: // automatisch naar betalingmenu	
                         break; 
         }	
-        closeSession(session);
-     betalingMenu();
-    
+     betalingMenu();   
      
      }
 
-    //id, betaaldatum, betaalwijze, klant, factuur, betalingsgegevens
-     
+    //id, betaaldatum, betaalwijze, klant, factuur, betalingsgegevens     
     private void wijzigingenInBetaling() {
-           
-        session = getSession();
-        betalingDao = new BetalingDao();
         
-        Betaling gewijzigdeBetaling = new Betaling();
-        boolean gewijzigd;
-        
-        long betalingId = betalingView.voerBetalingIdIn();
+        betalingId = betalingView.voerBetalingIdIn();
         betaling = (Betaling) betalingDao.readById(betalingId);
-        session.getTransaction().commit();
-        closeSession(session);
-        session = getSession();
         gewijzigdeBetaling = invoerNieuweBetalingGegevens(betaling);
         
         betalingDao.update(betaling);
-        session.getTransaction().commit();
         betaling = betalingDao.readById(betalingId);
         betalingView.printBetalingOverzicht(betaling);
-        closeSession(session); 
     
         betalingMenu();
     }
-
     
     
      public Betaling invoerNieuweBetalingGegevens(Betaling betaling) {
                 // niet wijzigen: id, datum, klant, factuur
-        int juist = 0;
-        
+        int juist = 0;        
 //         get BetaalWijze betaalwijze, daar de String betaalwijze
         Betaalwijze bw = betaling.getBetaalwijze();
         String betaalwijze = bw.getBetaalwijze();        
@@ -257,18 +220,15 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
                 break;   
             default:
                 return null;    
-        }
-            
-            
-            
+            }
         }
         
         String betalingsGegevens = betaling.getBetalingsGegevens();        
         juist = betalingView.checkInputString(betalingsGegevens);
-        if (juist == 2) {
-            // aanpassen
-            betalingsGegevens = betalingView.aanpassenBetalingsGegevens(betalingsGegevens);
-        }
+            if (juist == 2) {
+                // aanpassen
+                betalingsGegevens = betalingView.aanpassenBetalingsGegevens(betalingsGegevens);
+            }
         // setters betaalwijze, betalingsGegevens
         betaling.setBetaalwijze(bw);
         betaling.setBetalingsGegevens(betalingsGegevens);          
@@ -279,22 +239,17 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
          
     private void verwijderenVanBetaling() {
         
-        betalingDao = new BetalingDao();
-        session = getSession();
-                
         int userInput = betalingView.printVerwijderMenu();
         switch (userInput) {
             case 1:// 1 betaling verwijderen  
                 betalingView.printBetalingLijst((ArrayList<Betaling>) betalingDao.readAll(Betaling.class));
                 long betalingId = betalingView.printDeleteBetalingById();
                 betalingDao.deleteById(betalingId);
-                session.getTransaction().commit();   
                 break;
             case 2:// alle betalingen verwijderen                
                 int x = betalingView.bevestigingsVraag();                
                     if (x == 1){ // bevestiging is ja
-                        int verwijderd = betalingDao.deleteAll(Betaling.class);  
-                        session.getTransaction().commit();
+                        int verwijderd = betalingDao.deleteAll(Betaling.class); 
                         System.out.println(verwijderd + " totaal aantal artikelen zijn verwijderd");                       
                     }                
                     else { // bevestiging = nee
@@ -313,12 +268,5 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
         hoofdMenuController = new HoofdMenuController();
         hoofdMenuController.start();
     }  
-
-   
-
-   
-
-
-
 
 }
