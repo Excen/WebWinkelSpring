@@ -3,11 +3,7 @@
 
 package com.anjewe.anjewewebwinkel.Controller;
 
-import com.anjewe.anjewewebwinkel.DAOGenerics.FactoryDao;
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
-import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoInterface;
-import com.anjewe.anjewewebwinkel.DAOs.AccountDao;
-import com.anjewe.anjewewebwinkel.DAOs.KlantDao;
 import com.anjewe.anjewewebwinkel.POJO.*;
 import com.anjewe.anjewewebwinkel.View.*;
 import java.util.ArrayList;
@@ -122,7 +118,7 @@ private static final Logger log = LoggerFactory.getLogger(AccountController.clas
     }
     
     
-    private void zoekAccountGegevens() {       
+    public void zoekAccountGegevens() {       
         
         int userInput = accountView.menuAccountZoeken();
         switch(userInput) {

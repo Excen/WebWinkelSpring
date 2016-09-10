@@ -18,6 +18,7 @@ import com.anjewe.anjewewebwinkel.View.BestellingView;
 import com.anjewe.anjewewebwinkel.View.KlantView;
 import com.anjewe.anjewewebwinkel.View.ArtikelView;
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoInterface;
+import com.anjewe.anjewewebwinkel.DAOs.BestellingArtikelDao;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -47,7 +48,7 @@ public class BestellingController {
     GenericDaoImpl<Bestelling, Long> bestellingDao; 
     GenericDaoImpl<Artikel, Long> artikelDao;
     GenericDaoImpl<Klant, Long> klantDao;
-//    BestellingArtikelDao bestellingArtikelDao = new BestellingArtikelDao();
+    GenericDaoImpl <BestellingArtikel, Long> bestellingArtikelDao;
     
     BestellingView bestellingView; 
     ArtikelView artikelView; 
@@ -56,7 +57,7 @@ public class BestellingController {
     
     Scanner scanner = new Scanner(System.in);
     int userInput;
-    Long artikelKeuze;
+    Long artikelId;
     int artikelAantal;
     
     
@@ -118,7 +119,7 @@ public class BestellingController {
        
         // Bestaande klant opzoeken en toevoegen aan bestelling
         long klantId = bestellingView.voerKlantIdIn();
-        Klant klant = (Klant) session.get(Klant.class, klantId);
+        Klant klant = (Klant) klantDao.readById(klantId);
         
         Bestelling bestelling = new Bestelling();
         bestelling.setKlant(klant);
@@ -141,7 +142,7 @@ public class BestellingController {
             try{
                 
             // welk artikel
-            artikelKeuze = bestellingView.voerArtikelIdIn();
+            artikelId = bestellingView.voerArtikelIdIn();
             
             // hoe vaak
             artikelAantal = bestellingView.voerAantalIn();
@@ -150,7 +151,7 @@ public class BestellingController {
                 System.out.println("Voer een integer in.");
             }
             
-            Artikel artikel = (Artikel) session.get(Artikel.class, artikelKeuze);
+            Artikel artikel = (Artikel) artikelDao.readById(artikelId);
             
             BestellingArtikel bestellingArtikel = new BestellingArtikel();
             bestellingArtikel.setArtikelAantal(artikelAantal);
@@ -195,7 +196,7 @@ public class BestellingController {
         Long bestellingId;
         bestellingId = bestellingView.voerBestellingIdIn();
         
-        Bestelling bestelling = (Bestelling) session.get(Bestelling.class, bestellingId);
+        Bestelling bestelling = (Bestelling) bestellingDao.readById(bestellingId);
         bestellingView.printBestellingInfo(bestelling);
         System.out.println("---");
         Set <BestellingArtikel> artikelLijst = bestelling.getBestellingArtikellen();
@@ -213,7 +214,7 @@ public class BestellingController {
         klantId = bestellingView.voerKlantIdIn();
         
         System.out.println("De bestellingen van Klant ID: " + klantId + " zijn:");
-        Klant klant = (Klant) session.get(Klant.class, klantId);
+        Klant klant = (Klant) klantDao.readById(klantId);
         Set <Bestelling> bestellingen = klant.getBestellingen();
         for (Bestelling best: bestellingen){
             System.out.println("Bestelling ID: " + best.getId());
@@ -240,7 +241,7 @@ public class BestellingController {
         
         bestellingId = bestellingView.voerBestellingIdIn();
         
-        bestelling = (Bestelling)session.get(Bestelling.class, bestellingId);
+        bestelling = (Bestelling)bestellingDao.readById(bestellingId);
         bestellingView.printBestellingInfo(bestelling);
         
         // Artikellen in bestelling tonen
@@ -266,7 +267,7 @@ public class BestellingController {
             
            
             Bestelling wijzigBestelling;
-            wijzigBestelling = (Bestelling) session.get(Bestelling.class, bestellingId);
+            wijzigBestelling = (Bestelling) bestellingDao.readById(bestellingId);
             Set<BestellingArtikel>bestellingArtikellen;
             Set<BestellingArtikel>bestellingArtikellenClone = new HashSet<>();
             bestellingArtikellen = (Set<BestellingArtikel>) wijzigBestelling.getBestellingArtikellen();
@@ -280,7 +281,8 @@ public class BestellingController {
             }
             
             for (BestellingArtikel BSC: bestellingArtikellenClone){
-                session.delete(BSC);
+               // deze delete methode is nog niet getest > niet eerder gebruikt
+                bestellingArtikelDao.delete(BSC);
                 bestellingArtikellen.remove(BSC);
             }
 
@@ -290,7 +292,7 @@ public class BestellingController {
             if (bestellingArtikellen.isEmpty()){
                 
                 System.out.println("Bestelleng ID: " + bestellingId + " heeft geen artikellen meer, bestelling word verwijderd");
-                session.delete(bestelling);
+                bestellingDao.deleteById(bestellingId);
                 
             }
                    
@@ -303,7 +305,7 @@ public class BestellingController {
           
             
             Bestelling wijzigBestelling;
-            wijzigBestelling = (Bestelling) session.get(Bestelling.class, bestellingId);
+            wijzigBestelling = (Bestelling) bestellingDao.readById( bestellingId);
             Set<BestellingArtikel>bestellingArtikellen;
             bestellingArtikellen = (Set<BestellingArtikel>) wijzigBestelling.getBestellingArtikellen();
             
@@ -314,7 +316,7 @@ public class BestellingController {
                 if (BS.getArtikel().getId() == artikelKeus){
                     
                     BS.setArtikelAantal(nieuwAantal);
-                    session.update(BS);
+                    bestellingArtikelDao.update(BS);
                     
                     // nog een sout met nieuwe artikel info
                 }
