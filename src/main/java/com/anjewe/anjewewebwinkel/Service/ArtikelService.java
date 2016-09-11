@@ -1,5 +1,5 @@
 
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ArtikelController {  
+public class ArtikelService {  
     
-    public ArtikelController (){
+    public ArtikelService (){
         
     }
     
@@ -36,33 +36,6 @@ public class ArtikelController {
     @Autowired
     GenericDaoImpl<Artikel, Long> artikelDao = new ArtikelDao();
     
-    
-    public void artikelMenu()  {
-        
-        int userInput = artikelView.startArtikelMenu();
-        
-        switch (userInput) {
-            case 1: 
-                artikel = createArtikel();
-                voegNieuwArtikelToe(artikel); 
-                break;
-            case 2: 
-                zoekArtikelGegevens();
-                break;
-            case 3:
-                wijzigArtikelGegevens();
-                break;
-            case 4:
-                verwijderArtikelGegevens();
-                break;
-            case 5:
-                terugNaarHoofdMenu();
-                break;
-            default:
-                System.out.println("Deze optie is niet beschikbaar.");
-                break;
-        }  
-    }
     
     
     public Artikel createArtikel() {
@@ -84,7 +57,6 @@ public class ArtikelController {
         System.out.println("U heeft de volgende gegevens ingevoerd: " );
         artikelView.printArtikelOverzicht(artikel);         
         
-        artikelMenu();
     }
          
     
@@ -108,8 +80,6 @@ public class ArtikelController {
                 default: // automatisch naar artikelmenu	
                         break; 
         }	
-        
-     artikelMenu();
     }
     
     

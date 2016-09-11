@@ -26,8 +26,7 @@ public class Main {
     public static void main (String[]args) throws SQLException, ClassNotFoundException, FileNotFoundException {    
 
       ApplicationContext context = new AnnotationConfigApplicationContext(Main.class);
-      HoofdMenuController start = context.getBean(HoofdMenuController.class);
-      start.start();
+      
         
        
     } 

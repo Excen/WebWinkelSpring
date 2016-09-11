@@ -1,7 +1,10 @@
     
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
 
+import com.anjewe.anjewewebwinkel.Service.FactuurService;
+import com.anjewe.anjewewebwinkel.Service.AdresService;
+import com.anjewe.anjewewebwinkel.Service.AccountService;
 import com.anjewe.anjewewebwinkel.DAOs.*;
 import com.anjewe.anjewewebwinkel.POJO.*;
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
@@ -28,9 +31,9 @@ import org.springframework.stereotype.Component;
  * @author Anne
  */
 @Component
-public class KlantController {
+public class KlantService {
     
-    KlantController(){}
+    KlantService(){}
     //data fields
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.webshop");
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.webshop.err");
@@ -51,7 +54,7 @@ public class KlantController {
    @Autowired
     Account account;
    @Autowired
-   AccountController accountController;
+   AccountService accountController;
    @Autowired
     AccountView accountView;
     @Autowired        
@@ -66,7 +69,7 @@ public class KlantController {
     @Autowired
     AdresView adresView;
     @Autowired
-    AdresController adresController;  
+    AdresService adresController;  
     @Autowired
     Adres adres; 
            
@@ -77,7 +80,7 @@ public class KlantController {
     @Autowired
     HoofdMenuView hoofdMenuView;
     @Autowired
-    FactuurController factuurController;
+    FactuurService factuurController;
     @Autowired
     FactuurView factuurView;
     @Autowired
@@ -85,51 +88,7 @@ public class KlantController {
     
     EmailValidator validator = EmailValidator.getInstance(); 
     boolean isAddressValid = false;
-  
-    
-    public void klantMenu() {
-        
-        int keuze = klantView.startMenuKlant();
-        
-        switch(keuze){
-            case 1: 
-                voegNieuweKlantMetAdresToe();
-                break;
-              case 2:
-                zoekKlantGegevens();
-                break;
-            case 3: 
-                wijzigKlantGegevens();
-                break;
-            case 4: 
-                verwijderKlantGegevens();
-                break;
-            case 5: 
-                voegNieuweKlantToe();
-                break;
-            case 6:
-                voegKlantAanAdresToe();
-                break;            
-            case 7: 
-                zoekAdresMetKlantId();
-                break;
-            case 8:
-                zoekFacturenBijKlant();
-                break;
-            case 9:
-                zoekBestellingenBijKlant();
-                break; 
-            case 10:
-                zoekAccountBijKlant();
-                break; 
-            case 11:
-                terugNaarHoofdMenu();
-                break;
-            default: 
-                System.out.println("Deze optie is niet beschikbaar.");
-                break;  
-        }                
-    }
+ 
     
     // public <T> List<T> read(PK id, T t, Session session)
     public void zoekAdresMetKlantId(){
@@ -554,10 +513,5 @@ public class KlantController {
         return isAddressValid;
     } 
      
-    public void terugNaarHoofdMenu() {       
-        hoofdMenuController.start();
-    }  
-     
-     
     
-}  // end class KlantController
+}  // end class KlantService

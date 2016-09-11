@@ -1,8 +1,10 @@
 
 
 
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
+import com.anjewe.anjewewebwinkel.Service.BetalingService;
+import com.anjewe.anjewewebwinkel.Service.BestellingService;
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.DAOs.FactuurDao;
 import com.anjewe.anjewewebwinkel.POJO.Bestelling;
@@ -22,9 +24,9 @@ import org.springframework.stereotype.Component;
  * @author Wendy
  */
 @Component
-public class FactuurController {
+public class FactuurService {
 
-private static final Logger log = LoggerFactory.getLogger(FactuurController.class);
+private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
     Bestelling bestelling;
     Betaling betaling; 
@@ -37,40 +39,12 @@ private static final Logger log = LoggerFactory.getLogger(FactuurController.clas
     GenericDaoImpl<Bestelling, Long> bestellingDao;
     GenericDaoImpl<Betaling, Long> betalingDao;
     
-    BestellingController bestellingController;
-    BetalingController betalingController; 
-    KlantController klantController;
+    BestellingService bestellingController;
+    BetalingService betalingController; 
+    KlantService klantController;
     HoofdMenuController hoofdMenuController; 
     
-    
-    public void factuurMenu() {
-        
-        int keuze = factuurView.startMenuFactuur();
-        
-        switch(keuze){
-            case 1: 
-                voegNieuweFactuurToe();
-                break;
-            case 2:
-                zoekFactuurGegevens();
-                break;  
-            case 3:
-                wijzigFactuurGegevens();
-                break;
-            case 4:
-                verwijderFactuurGegevens();
-                break;
-            case 5:
-                voegBetalingToe();
-                break;
-            case 6: 
-                terugNaarHoofdMenu();
-                break;
-            default: 
-                System.out.println("Deze optie is niet beschikbaar.");
-                break;  
-        }  
-    }
+   
        
     
     public Factuur createFactuur(){        
@@ -247,11 +221,6 @@ private static final Logger log = LoggerFactory.getLogger(FactuurController.clas
          return totaalBedrag;
     }
     
-    
-    public void terugNaarHoofdMenu() {
-        hoofdMenuController = new HoofdMenuController();
-        hoofdMenuController.start();
-    }  
 
     
     public void voegBetalingToe(){

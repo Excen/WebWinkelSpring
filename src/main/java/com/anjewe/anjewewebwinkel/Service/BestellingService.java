@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
@@ -33,9 +33,9 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class BestellingController {
+public class BestellingService {
     
-    BestellingController(){
+    BestellingService(){
         
     }
     
@@ -60,59 +60,7 @@ public class BestellingController {
     Long artikelId;
     int artikelAantal;
     
-    
-        
-    public void bestellingMenu() {
-        
-        userInput = bestellingView.startBestellingMenu();
-        
-        switch (userInput) {
-                // bestelling plaatsen
-            case 1:
-                plaatsBestelling();                   
-                break;  
-                
-                // bestellinginfo ophalen
-            case 2:      
-                haalBestellingInfoOp();
-                break;
-                
-                // Bestelling wijzigen
-            case 3:
-                wijzigBestelling();
-                break;
-                
-                // Bestelling verwijderen
-            case 4:
-                verwijderBestelling();
-                break;
-                
-                // Alle bestellingen tonen
-            case 5:
-                toonAlleBestellingen();       
-                break;
-                
-                // verijder alle bestellingen
-            case 6:
-                verwijderAlleBestellingen();    
-                break;
-                
-                // terug naar hoofdmenu
-            case 7:
-                terugNaarHoofdMenu();    
-                break;
-                    
-                // default        
-            default:    
-                break;
-        }
-        terugNaarHoofdMenu();
-    }
-    
-    public void terugNaarHoofdMenu() {
-        HoofdMenuController hoofdMenu = new HoofdMenuController();
-        hoofdMenu.start();
-    }
+  
     
     public void plaatsBestelling() {            
 

@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.POJO.Adres;
-import com.anjewe.anjewewebwinkel.View.AdresView;
-import com.anjewe.anjewewebwinkel.View.HoofdMenuView;
 import java.util.ArrayList;
 import com.anjewe.anjewewebwinkel.POJO.Klant;
 import com.anjewe.anjewewebwinkel.POJO.KlantAdres;
-import com.anjewe.anjewewebwinkel.View.KlantView;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,25 +20,21 @@ import org.springframework.stereotype.Component;
  *
  * @author Anne
  */
+
 @Component
-public class AdresController {
+public class AdresService {
      
-    AdresController(){
-        
+    AdresService(){        
     }
     
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.webshop");
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.webshop.err");
     private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.webshop.test");
    
-   HoofdMenuView hoofdMenuView = new HoofdMenuView(); 
-   
-   AdresView adresView;
-   KlantView klantView;
    Adres adres;    
    Klant klant;
    KlantAdres KA;
-   KlantController klantController;
+   KlantService klantController;
    ArrayList<Adres> adressenLijst = new ArrayList();
        
    GenericDaoImpl <Klant, Long> klantDao ;
@@ -49,47 +42,9 @@ public class AdresController {
    
    int userInput;
    
-    public void adresMenu()  {
-        
-        userInput = adresView.startAdresMenu();
-        
-        switch (userInput) {
-            case 1:
-                userInput = adresView.bentUNieuweKlant();
-                if (userInput == 1) {
-                    System.out.println("Vul eerst de klantgegevens in.");
-                    System.out.println();
-                    klantController.voegNieuweKlantMetAdresToe();
-                }
-                else if (userInput == 2) {
-                    voegNieuwAdresToe();
-                }
-                break;
-            case 2:
-                zoekAdresGegevens();
-                break;
-            case 3:
-                wijzigAdresGegevens();
-                break;
-            case 4:
-                verwijderAdresGegevens();
-                break;
-//            case 5: zoekAdresKlantGegevens();
-//                break;
-            case 6: 
-                terugNaarHoofdMenu();                   
-                break;
-            default:
-                System.out.println("Deze optie is niet beschikbaar.");
-                break;
-        } 
-    }
     
     public long voegNieuwAdresToe() {
         
-        
-        System.out.println("U wilt een nieuw adres toevoegen. Voer hieronder de gegevens in.");
-        Long klantId = adresView.voerKlantIdIn();
         klant = (Klant)klantDao.readById(klantId);
         adres = createAdres();
         
@@ -114,7 +69,7 @@ public class AdresController {
         System.out.println("U heeft het volgende adres toegevoegd.");
         adresView.printAdresOverzicht(adres);
         
-        adresMenu();
+       
         return adresId;            
     }
     
@@ -198,7 +153,7 @@ public class AdresController {
             default:
                 break;
         }
-        adresMenu();
+       
     }
     
     public void wijzigAdresGegevens() {      
@@ -223,7 +178,7 @@ public class AdresController {
                 System.out.println("Die optie is niet beschikbaar, je keert terug naar het bestelling menu.");
                 break;
         }
-        adresMenu();
+        
     }
     
     
@@ -408,7 +363,7 @@ public class AdresController {
             default:
                 break;
         }
-        adresMenu();                 
+                     
     }
     
 //    public void zoekAdresKlantGegevens(){
@@ -455,8 +410,5 @@ public class AdresController {
 //    }
 //    
 //    
-    public void terugNaarHoofdMenu() {
-        HoofdMenuController hoofdMenuController = new HoofdMenuController();
-        hoofdMenuController.start();
-    }
+   
 }

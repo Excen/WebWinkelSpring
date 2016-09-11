@@ -1,7 +1,7 @@
 
 
 
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.DAOs.BetaalwijzeDao;
@@ -24,9 +24,9 @@ import org.springframework.stereotype.Component;
  * @author Wendy
  */
 @Component
-public class BetalingController {
+public class BetalingService {
 
-private static final Logger log = LoggerFactory.getLogger(BetalingController.class);
+private static final Logger log = LoggerFactory.getLogger(BetalingService.class);
 
     FactuurView  factuurView = new FactuurView();
     BetalingView betalingView = new BetalingView();
@@ -51,33 +51,6 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
     
     ApplicationContextConfig acc = new ApplicationContextConfig();
     
-    
-    public void betalingMenu() {
-        
-        int keuze = betalingView.startMenuBetaling();
-        
-        switch(keuze){
-            case 1: 
-                voegNieuweBetalingToe();
-                break;
-            case 2:
-                zoekBetalingGegevens();
-                break;  
-            case 3: 
-                wijzigingenInBetaling();
-                break;
-            case 4: 
-                verwijderenVanBetaling();
-                break; 
-            case 5:
-                terugNaarHoofdMenu();
-                break;            
-            default: 
-                System.out.println("Deze optie is niet beschikbaar.");
-                break;        
-            
-        }                
-    }        
     
         
     public Betaling createBetaling(Long factuurId){
@@ -261,12 +234,9 @@ private static final Logger log = LoggerFactory.getLogger(BetalingController.cla
             default:
                 break;
         }
-        betalingMenu(); }
+        
+    }
     
-    
-    public void terugNaarHoofdMenu() {
-        hoofdMenuController = new HoofdMenuController();
-        hoofdMenuController.start();
-    }  
+   
 
 }
