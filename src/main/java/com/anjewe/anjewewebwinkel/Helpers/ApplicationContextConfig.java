@@ -78,7 +78,7 @@ return properties;
 public LocalSessionFactoryBean sessionFactory() throws SQLException {
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
     sessionFactory.setDataSource(dataSource());
-    sessionFactory.setPackagesToScan(new String[] { "com.mycompany" });
+    sessionFactory.setPackagesToScan(new String[] { "com.anjewe.anjewewebwinkel" });
     sessionFactory.setHibernateProperties(connectionProperties());
      
     return sessionFactory;
@@ -87,10 +87,10 @@ public LocalSessionFactoryBean sessionFactory() throws SQLException {
     // transactionmanager Bean
  @Bean
  public HibernateTransactionManager transactionManager() throws SQLException {
-        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-        transactionManager.setSessionFactory(sessionFactory().getObject());
-        System.out.println("test SF:" + sessionFactory().getObjectType());
-        return transactionManager;
+    HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+    transactionManager.setSessionFactory(sessionFactory().getObject());
+    System.out.println("test SF:" + sessionFactory().getObjectType());
+    return transactionManager;
  }
 
 }

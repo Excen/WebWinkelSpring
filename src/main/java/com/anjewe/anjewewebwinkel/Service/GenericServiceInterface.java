@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.anjewe.anjewewebwinkel.Controller;
+package com.anjewe.anjewewebwinkel.Service;
 
+import com.anjewe.anjewewebwinkel.Controller.*;
 import java.util.List;
 
 /**
@@ -12,21 +13,20 @@ import java.util.List;
  * @author Wendy
  * @param <T>
  */
-public interface GenericControllerInterface <T > {
+public interface GenericServiceInterface <T > {
     
     //invoer
     public T voegNieuweBeanToe(Long Id);
     public Long voegNieuweBeanToe(T t);
     
     //zoeken
-    public T zoekNaarBean();
+    public T zoekNaarBean(Long Id);
     public Long zoekNaarBean(T t);
     public List<T> zoekAlleBeans();
     
     //update
     public T wijzigBeanGegevens(Long id);
-    public Long wijzigBeanGegevens(T t);
-    
+    public T wijzigBeanGegevens(T t);
     
     //verwijder
     public boolean verwijderBeanGegevens(Long Id);

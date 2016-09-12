@@ -3,7 +3,7 @@
 
 package com.anjewe.anjewewebwinkel.converter;
 
-import com.anjewe.anjewewebwinkel.Controller.AccountController;
+import com.anjewe.anjewewebwinkel.Service.AccountService;
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.POJO.Account;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ public class ConvertToAccountProfiel {
 private static final Logger log = LoggerFactory.getLogger(ConvertToAccountProfiel.class);
 
 @Autowired // vraag is of dit de juiste klasse is
-AccountController accountController;
+AccountService accountController;
 
 @Autowired
 GenericDaoImpl<Account, Long> accountDao;  
@@ -31,6 +31,7 @@ GenericDaoImpl<Account, Long> accountDao;
      * Gets accountprofiel by Id
      * @see org.springframework.core.convert.converter.Converter#convert(java.lang.Object)
      */
+
     public Account convert(Object element) {
         Long id = Long.parseLong((String)element);
         Account account = (Account) accountDao.readById(id);

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @author Anne
  */
 @Configuration
-@ComponentScan(basePackages = {"spitter"},
+@ComponentScan(basePackages = {"com.anjewe.anjewewebwinkel"},
     excludeFilters = {
         @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
     })
