@@ -1,6 +1,5 @@
 package com.anjewe.anjewewebwinkel;
 
-import com.anjewe.anjewewebwinkel.Controller.HoofdMenuController;
 
 import java.io.FileNotFoundException;
 import java.sql.SQLException;

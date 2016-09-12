@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.anjewe.anjewewebwinkel.web") // extensie???
+@ComponentScan(basePackages = "com.anjewe.anjewewebwinkel") // extensie???
 public class WebConfig extends WebMvcConfigurerAdapter {
     
     @Bean

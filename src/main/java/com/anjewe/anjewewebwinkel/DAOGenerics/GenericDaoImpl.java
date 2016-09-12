@@ -59,7 +59,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     public long insert(T t) {        
         log.info(beanType.getSimpleName() + " creeeren in de database. Return id");
         
-        long id = (Long) getSession().save(t);        
+        long id = (Long) getSession().save(t);      
         
         return id;           
     }

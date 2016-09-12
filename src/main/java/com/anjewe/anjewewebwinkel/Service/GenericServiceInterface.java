@@ -6,16 +6,19 @@
 package com.anjewe.anjewewebwinkel.Service;
 
 import com.anjewe.anjewewebwinkel.Controller.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * @author Wendy
  * @param <T>
+ * @param <PK>
+ * @param <Long>
  */
-public interface GenericServiceInterface <T > {
+public interface GenericServiceInterface <T, PK extends Serializable> {
     
-    //invoer
+    //invoer - opslaan
     public T voegNieuweBeanToe(Long Id);
     public Long voegNieuweBeanToe(T t);
     
@@ -31,6 +34,7 @@ public interface GenericServiceInterface <T > {
     //verwijder
     public boolean verwijderBeanGegevens(Long Id);
     public int verwijderAlleBeans();
+    
     
     
     
