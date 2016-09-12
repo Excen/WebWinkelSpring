@@ -7,33 +7,25 @@ package com.anjewe.anjewewebwinkel.Service;
 
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
-import com.anjewe.anjewewebwinkel.DAOs.ArtikelDao;
 import com.anjewe.anjewewebwinkel.DAOs.BestellingDao;
-import com.anjewe.anjewewebwinkel.POJO.BestellingArtikel;
 import com.anjewe.anjewewebwinkel.POJO.Bestelling;
-import com.anjewe.anjewewebwinkel.POJO.BestellingArtikelId;
-import com.anjewe.anjewewebwinkel.POJO.Klant;
-import com.anjewe.anjewewebwinkel.POJO.Artikel;
-import com.anjewe.anjewewebwinkel.View.BestellingView;
-import com.anjewe.anjewewebwinkel.View.KlantView;
-import com.anjewe.anjewewebwinkel.View.ArtikelView;
-import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoInterface;
-import com.anjewe.anjewewebwinkel.DAOs.BestellingArtikelDao;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author Excen
  */
 
-@Component
-public class BestellingService {
+@Transactional
+@Service
+public class BestellingService extends BestellingDao implements GenericServiceInterface <Bestelling, Long> {
     
     BestellingService(){
         
@@ -44,16 +36,79 @@ public class BestellingService {
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.webshop.err");
     private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.webshop.test");
     
+    @Autowired
+    protected GenericDaoImpl<Bestelling, Long> bestellingDao; 
     
-    GenericDaoImpl<Bestelling, Long> bestellingDao; 
-    GenericDaoImpl<Artikel, Long> artikelDao;
-    GenericDaoImpl<Klant, Long> klantDao;
-    GenericDaoImpl <BestellingArtikel, Long> bestellingArtikelDao;
+    @Autowired
+    Bestelling bestelling;
     
-    BestellingView bestellingView; 
-    ArtikelView artikelView; 
-    KlantView klantView;
-    // BestellingArtikelView?
+    @Autowired
+    Bestelling gewijzigdeBestelling;
+    
+    // ----
+    
+    @Override
+    public Bestelling voegNieuweBeanToe(Long Id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long voegNieuweBeanToe(Bestelling t) {
+        Long bestellingId = (Long)bestellingDao.insert(t);
+        return bestellingId;
+    }
+
+    @Override
+    public Bestelling zoekNaarBean(Long Id) {
+        bestelling = (Bestelling)bestellingDao.readById(Id);
+        return bestelling;
+    }
+
+    @Override
+    public Long zoekNaarBean(Bestelling t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Bestelling> zoekAlleBeans() {
+        ArrayList <Bestelling> bestellingLijst = (ArrayList<Bestelling>) bestellingDao.readAll(Bestelling.class);
+        return bestellingLijst;
+    }
+
+    @Override
+    public Bestelling wijzigBeanGegevens(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Bestelling wijzigBeanGegevens(Bestelling t) {
+        gewijzigdeBestelling = bestellingDao.readById(t.getId());
+        if (gewijzigdeBestelling != null){
+            gewijzigdeBestelling.setFactuur(t.getFactuur());
+            gewijzigdeBestelling.setId(t.getId());
+            gewijzigdeBestelling.setKlant(t.getKlant());
+            gewijzigdeBestelling.setDatum(t.getDatum());
+            gewijzigdeBestelling.setBestellingDatum(t.getBestellingDatum());
+            gewijzigdeBestelling.setBestellingArtikellen(t.getBestellingArtikellen());
+        }
+        bestellingDao.update(gewijzigdeBestelling);
+        return gewijzigdeBestelling;
+    }
+    
+    @Override
+    public boolean verwijderBeanGegevens(Long Id) {
+        boolean deleted = bestellingDao.deleteById(Id);
+        return deleted;
+    }
+
+    @Override
+    public int verwijderAlleBeans() {
+        int rowsAffected = bestellingDao.deleteAll(Bestelling.class);
+        return rowsAffected;
+    }
+
+
+    /*
     
     Scanner scanner = new Scanner(System.in);
     int userInput;
@@ -348,6 +403,8 @@ public class BestellingService {
         return BS;
         
     }
+
+*/    
   
 }
 
