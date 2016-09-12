@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.anjewe.anjewewebwinkel") // extensie???
+@ComponentScan({"anjewewebwinkel.Controller", "anjewewebwinkel.POJO","anjewewebwinkel.Helpers", "anjewewebwinkel.DAOs" } ) 
 public class WebConfig extends WebMvcConfigurerAdapter {
     
     @Bean
