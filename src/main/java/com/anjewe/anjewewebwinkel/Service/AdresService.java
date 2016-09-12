@@ -12,10 +12,10 @@ import com.anjewe.anjewewebwinkel.POJO.Adres;
 import java.util.ArrayList;
 import com.anjewe.anjewewebwinkel.POJO.Klant;
 import com.anjewe.anjewewebwinkel.POJO.KlantAdres;
-import java.util.Date;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,155 +33,13 @@ public class AdresService extends AdresDao implements GenericServiceInterface <A
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.err");
     private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.test");
    
+   @Autowired 
    Adres adres;    
-   Klant klant;
-   KlantAdres KA;
-   KlantService klantController;
    ArrayList<Adres> adressenLijst = new ArrayList();
-       
-   GenericDaoImpl <Klant, Long> klantDao ;
+   @Autowired
    GenericDaoImpl <Adres, Long> adresDao;
-   
-   int userInput;
-   
+  
     
-    public long voegNieuwAdresToe() {
-        
-        klant = (Klant)klantDao.readById(klantId);
-        adres = createAdres();
-        
-        //voeg toe in adrestabel
-        
-        
-        System.out.println(adresId);
-        
-        // voeg toe in koppel - 
-        // vraag daarvoor klant op en naam medewerker
-         
-         klant = (Klant)klantDao.readById(klantId);
-         String medewerker = klantView.voerNaamMwIn();
-            KA.setKlant(klant);
-            KA.setAdres(adres);
-            KA.setCreatedDate(new Date());
-            KA.setCreatedBy(medewerker);
-        
-            klant.getKlantAdressen().add(KA);
-        
-         
-        System.out.println("U heeft het volgende adres toegevoegd.");
-        adresView.printAdresOverzicht(adres);
-        
-       
-        return adresId;            
-    }
-    
-    
-    public Adres createAdres() {  
-        
-        String straatnaam = adresView.voerStraatnaamIn();
-        int huisnummer = adresView.voerHuisnummerIn();
-        String toevoeging = adresView.voerToevoegingIn();
-        String postcode = adresView.voerPostcodeIn();
-        String woonplaats = adresView.voerWoonplaatsIn();
-              
-        adres.setStraatnaam(straatnaam);
-        adres.setHuisnummer(huisnummer);
-        adres.setToevoeging(toevoeging);
-        adres.setPostcode(postcode);
-        adres.setWoonplaats(woonplaats);        
-        
-        return adres;
-    }
-    
-    
-    
-    public Adres invoerNieuweAdresGegevens(Adres adres) {
-        
-       int juist = 0;
-        
-        String straatnaam = adres.getStraatnaam();
-        juist = adresView.checkInputString(straatnaam);
-        if (juist == 2) {
-            straatnaam = adresView.voerStraatnaamIn();
-        } 
-        
-        int huisnummer = adres.getHuisnummer();
-        String huisnummerString = huisnummer + "";
-        juist = adresView.checkInputString(huisnummerString);
-        if (juist == 2) {
-            huisnummer = adresView.voerHuisnummerIn();
-        } 
-        
-        String toevoeging = adres.getToevoeging();
-        juist = adresView.checkInputString(toevoeging);
-        if (juist == 2) {
-            toevoeging = adresView.voerToevoegingIn();
-        } 
-        
-        String postcode = adres.getPostcode();
-        juist = adresView.checkInputString(postcode);
-        if (juist == 2) {
-            postcode = adresView.voerPostcodeIn();
-        } 
-        
-        String woonplaats = adres.getWoonplaats();
-        juist = adresView.checkInputString(woonplaats);
-        if (juist == 2) {
-            woonplaats = adresView.voerWoonplaatsIn();
-        } 
-        
-        adres.setStraatnaam(straatnaam);
-        adres.setHuisnummer(huisnummer);
-        adres.setToevoeging(toevoeging);
-        adres.setPostcode(postcode);
-        adres.setWoonplaats(woonplaats);    
-        
-        return adres;
-    }
-    
-    
-    public void zoekAdresKlantGegevens(){
-        
-        long klantId; 
-        userInput = adresView.menuAdresKlantZoeken();
-       
-        switch(userInput){
-           case 1: // adres(sen) bij klantId
-               klantId = klantView.voerKlantIdIn();
-               ArrayList<Adres>adressenLijst = klantAdresDao.findAdresByKlantId(klantId);
-               adresView.printAdressenLijst(adressenLijst);
-               break;
-           case 2: // alle adressen bij klanten opzoeken
-               ArrayList<KlantAdres> klantAdresLijst = klantAdresDao.findAll();
-               adresView.printKlantAdresLijst(klantAdresLijst);
-               int keuze = adresView.alleKoppellingenUitgeprint();
-               switch(keuze){
-                   case 1: // ja
-                        for (int i = 0 ; i < klantAdresLijst.size(); i++){
-                            long adresId = klantAdresLijst.get(i).getAdresId();
-                            klantId = klantAdresLijst.get(i).getKlantId();
-                            adres = adresDao.findByAdresID(adresId);
-                            Klant klant = klantDao.findByKlantId(klantId);
-                            System.out.println("Onderstaand adres:");
-                            adresView.printAdresOverzicht(adres);                           
-                            System.out.println("hoort bij: ");
-                            klantView.printKlantGegevens(klant);
-                            
-                        }
-                            break;
-                    case 2: // nee   
-                        break;
-               
-               }
-               break;
-           case 3:
-                break;
-            default:
-                break;
-           
-       }
-      
-    }
 
     @Override
     public Adres voegNieuweBeanToe(Long Id) {         
@@ -207,9 +65,8 @@ public class AdresService extends AdresDao implements GenericServiceInterface <A
 
     @Override
     public List<Adres> zoekAlleBeans() {  
-        ArrayList<Adres> adressenLijst = new ArrayList<>();
-            adressenLijst = (ArrayList<Adres>)adresDao.readAll(Adres.class);
-            return adressenLijst; 
+        adressenLijst = (ArrayList<Adres>)adresDao.readAll(Adres.class);
+        return adressenLijst; 
     }
 
     @Override
@@ -218,10 +75,20 @@ public class AdresService extends AdresDao implements GenericServiceInterface <A
     }
 
     @Override
-    public Adres wijzigBeanGegevens(Adres t) {
-        adresDao.update(t);        
-        return t;
+    public Adres wijzigBeanGegevens(Adres adres) {
+        Adres gewijzigdAdres = adresDao.readById(adres.getId());
+        if (gewijzigdAdres!= null){
+            gewijzigdAdres.setStraatnaam(adres.getStraatnaam());
+            gewijzigdAdres.setPostcode(adres.getPostcode());
+            gewijzigdAdres.setHuisnummer(adres.getHuisnummer());
+            gewijzigdAdres.setToevoeging(adres.getToevoeging());
+            gewijzigdAdres.setWoonplaats(adres.getWoonplaats()); 
+        }
+        adresDao.update(gewijzigdAdres);
+        return gewijzigdAdres;
     }
+    
+        
 
     @Override
     public boolean verwijderBeanGegevens(Long Id) {

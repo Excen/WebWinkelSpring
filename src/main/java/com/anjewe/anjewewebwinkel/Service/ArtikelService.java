@@ -4,148 +4,94 @@ package com.anjewe.anjewewebwinkel.Service;
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.DAOs.ArtikelDao;
-import com.anjewe.anjewewebwinkel.View.ArtikelView;
 import com.anjewe.anjewewebwinkel.POJO.Artikel;
-import com.anjewe.anjewewebwinkel.View.BestellingView;
 import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
 @Component
-public class ArtikelService {  
+public class ArtikelService extends ArtikelDao implements GenericServiceInterface <Artikel, Long> {  
     
     public ArtikelService (){
         
     }
     
-    private static final Logger logger = (Logger) LoggerFactory.getLogger("com.webshop");
-    private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.webshop.err");
-    private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.webshop.test");
+    private static final Logger logger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel");
+    private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.err");
+    private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.test");
    
     
-    @Autowired
-    ArtikelView artikelView ;  
+   
     @Autowired
     Artikel artikel;   
     @Autowired
-    Artikel gewijzigdArtikel;
-    @Autowired 
-    BestellingView bestellingView;
+    Artikel gewijzigdArtikel;   
     @Autowired
     GenericDaoImpl<Artikel, Long> artikelDao = new ArtikelDao();
     
     
+      
+    @Override
+    public Artikel voegNieuweBeanToe(Long Id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long voegNieuweBeanToe(Artikel artikel) {
+         long id = artikelDao.insert(artikel);  
+         return id; 
+    }
     
-    public Artikel createArtikel() {
-        
-        System.out.println("Vul de artikel gegevens in: ");
-        String artikelNaam = artikelView.voerArtikelNaamIn();
-        double artikelPrijs = artikelView.voerAtrikelPrijsIn();
-        
-        artikel.setArtikelNaam(artikelNaam);
-        artikel.setArtikelPrijs(artikelPrijs);
+    @Override
+    public Artikel zoekNaarBean(Long Id) {
+        artikel = artikelDao.readById(Id);
         return artikel;
-    } 
-    
-    
-    public void voegNieuwArtikelToe(Artikel artikel) {  
-        
-        long id = artikelDao.insert(artikel);        
-        artikel = (Artikel) artikelDao.readById(id);        
-        System.out.println("U heeft de volgende gegevens ingevoerd: " );
-        artikelView.printArtikelOverzicht(artikel);         
-        
     }
-         
-    
-    public void zoekArtikelGegevens()  {    
-		
-        int input = artikelView.menuArtikelZoeken();
-        switch (input){
-                case 1:  // naar 1 artikel zoeken
-                     long artikelId = artikelView.voerArtikelIdIn();                        
-                        artikel = (Artikel) artikelDao.readById(artikelId);                        
-                        artikelView.printArtikelOverzicht(artikel);                     
-                    break; // einde naar 1 artikel zoeken
-                case 2: // alle artikelen zoeken                    
-                    ArrayList <Artikel> artikelenLijst = 
-                            (ArrayList <Artikel>) artikelDao.readAll(Artikel.class);                    
-                    System.out.println("Alle artikelen in het bestand");
-                    artikelView.printArtikelenLijst(artikelenLijst); 
-                        break; 
-                case 3: // naar artikelmenu
-                        break; 
-                default: // automatisch naar artikelmenu	
-                        break; 
-        }	
+
+    @Override
+    public Long zoekNaarBean(Artikel t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    public void wijzigArtikelGegevens() {  
-        
-        boolean gewijzigd;        
-        long artikelId = artikelView.voerArtikelIdIn();
-        artikel = (Artikel) artikelDao.readById(artikelId);
-        gewijzigdArtikel = invoerNieuweArtikelGegevens(artikel);  
-        artikelDao.update(gewijzigdArtikel); 
+
+    @Override
+    public List<Artikel> zoekAlleBeans() {
+        ArrayList <Artikel> artikelenLijst = 
+        (ArrayList <Artikel>) artikelDao.readAll(Artikel.class);  
+        return artikelenLijst;
     }
-    
-        
-    public Artikel invoerNieuweArtikelGegevens(Artikel artikel) {
-                
-        int juist = 0;
-        
-        String artikelNaam = artikel.getArtikelNaam();
-        juist = artikelView.checkInputString(artikelNaam);
-            if (juist == 2) {
-                artikelNaam = artikelView.voerArtikelNaamIn();
-            }
-        double artikelPrijs = artikel.getArtikelPrijs();
-        String artikelPrijsString = artikelPrijs + "";
-        juist = artikelView.checkInputString(artikelPrijsString);        
-            if (juist == 2) {
-                artikelPrijs = artikelView.voerAtrikelPrijsIn();
-            }
-        
-        long artikelId = artikel.getId();
-        Artikel artikelNieuw = new Artikel(artikelId, artikelNaam, artikelPrijs);
-        
-        return artikelNieuw;        
+
+    @Override
+    public Artikel wijzigBeanGegevens(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
-    public void verwijderArtikelGegevens()  {
-       
-        int userInput = artikelView.printVerwijderMenu();
-        switch (userInput) {
-            case 1:// 1 artikel verwijderen  
-                artikelView.printArtikelenLijst((ArrayList<Artikel>) artikelDao.readAll(Artikel.class));
-                long artikelId = artikelView.printDeleteArtikelById();
-                artikelDao.deleteById(artikelId);//             
-            case 2:// alle artikelen verwijderen                
-                int x = artikelView.bevestigingsVraag();                
-                    if (x == 1){ // bevestiging is ja
-                        int verwijderd = artikelDao.deleteAll(Artikel.class);                    
-                        System.out.println(verwijderd + " totaal aantal artikelen zijn verwijderd");                       
-                    }                
-                    else { // bevestiging = nee
-                        System.out.println("De artikel gegevens worden NIET verwijderd.");
-                    }
-                break;                
-            case 3:// door naar einde methode > naar artikelmenu();
-                break;
-            default:
-                break;
+
+    @Override
+    public Artikel wijzigBeanGegevens(Artikel artikel) {
+        
+        gewijzigdArtikel= artikelDao.readById(artikel.getId());
+        if (gewijzigdArtikel!= null){
+            gewijzigdArtikel.setArtikelNaam(artikel.getArtikelNaam());
+            gewijzigdArtikel.setArtikelPrijs(artikel.getArtikelPrijs());
         }
-        artikelMenu();
+        
+         artikelDao.update(gewijzigdArtikel); 
+         return gewijzigdArtikel; 
     }
-    
-    
-    public void terugNaarHoofdMenu() {
-        HoofdMenuController hoofdMenu = new HoofdMenuController();
-        hoofdMenu.start();
-    }   
+
+    @Override
+    public boolean verwijderBeanGegevens(Long Id) {
+        boolean verwijderd = artikelDao.deleteById(Id); 
+        return verwijderd;         
+    }
+
+    @Override
+    public int verwijderAlleBeans() {
+        int verwijderd = artikelDao.deleteAll(Artikel.class); 
+        return verwijderd;
+    }
     
 } // eind artikelcontroller

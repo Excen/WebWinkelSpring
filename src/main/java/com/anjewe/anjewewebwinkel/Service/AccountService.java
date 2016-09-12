@@ -25,7 +25,7 @@ public class AccountService extends AccountDao implements GenericServiceInterfac
 
 private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     
-       
+      
     @Autowired
     protected GenericDaoImpl<Account, Long> accountDao;  
 
