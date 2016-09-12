@@ -12,7 +12,7 @@ import com.anjewe.anjewewebwinkel.POJO.Adres;
  *
  * @author Anne
  */
-public class AdresDao extends GenericDaoImpl <Adres, Long> {
+public abstract class AdresDao extends GenericDaoImpl <Adres, Long> {
     
     public AdresDao() {
         super();

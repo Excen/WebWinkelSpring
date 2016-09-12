@@ -7,11 +7,13 @@ package com.anjewe.anjewewebwinkel.Service;
 
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
+import com.anjewe.anjewewebwinkel.DAOs.AdresDao;
 import com.anjewe.anjewewebwinkel.POJO.Adres;
 import java.util.ArrayList;
 import com.anjewe.anjewewebwinkel.POJO.Klant;
 import com.anjewe.anjewewebwinkel.POJO.KlantAdres;
 import java.util.Date;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,14 +24,14 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class AdresService {
+public class AdresService extends AdresDao implements GenericServiceInterface <Adres, Long>{
      
     AdresService(){        
     }
     
-    private static final Logger logger = (Logger) LoggerFactory.getLogger("com.webshop");
-    private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.webshop.err");
-    private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.webshop.test");
+    private static final Logger logger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel");
+    private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.err");
+    private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.test");
    
    Adres adres;    
    Klant klant;
@@ -49,7 +51,7 @@ public class AdresService {
         adres = createAdres();
         
         //voeg toe in adrestabel
-        Long adresId = (Long)adresDao.insert(adres);
+        
         
         System.out.println(adresId);
         
@@ -91,179 +93,6 @@ public class AdresService {
         return adres;
     }
     
-    
-    public void zoekAdresGegevens()  {
-        // read()
-        
-        
-        userInput = adresView.menuAdresZoeken();
-        switch (userInput) {
-            case 1:        
-                // één adres zoeken
-                userInput = adresView.hoeWiltUZoeken();
-                switch (userInput) {
-                    case 1: // zoek op adresId
-                       
-                        Long adresId = adresView.voerAdresIdIn();
-                        adres = (Adres)adresDao.readById(adresId);
-                       
-                        adresView.printAdresOverzicht(adres);
-                        
-                        break;
-//                    case 2: // zoek adressen op klantId
-//                        int klantId = klantView.voerKlantIdIn();
-//                        ArrayList<Adres>adressenLijst = klantAdresDao.findAdresByKlantId(klantId);
-//                        adresView.printAdressenLijst(adressenLijst);
-//                        break;
-//                    case 3: // zoek op straatnaam
-//                        String straatnaam = adresView.voerStraatnaamIn();
-//                        adressenLijst = adresDao.findByStraatNaam(straatnaam);
-//                        adresView.printAdressenLijst(adressenLijst);
-//                        break;
-//                    case 4: // zoek op postcode huisnummer
-//                        String postcode = adresView.voerPostcodeIn();
-//                        int huisnummer = adresView.voerHuisnummerIn();
-//                        adressenLijst = adresDao.findByPostcodeHuisNummer(postcode, huisnummer);
-//                        adresView.printAdressenLijst(adressenLijst);
-//                        break;
-//                    case 5: // zoek op woonplaats
-//                        String woonplaats = adresView.voerWoonplaatsIn();
-//                        adressenLijst = adresDao.findByWoonplaats(woonplaats);
-//                        adresView.printAdressenLijst(adressenLijst);
-//                        break;
-                    case 6:
-                        break; // doorsturen einde switch; terug naar adres menu
-                    default: 
-                        break;
-                }
-            break;
-            case 2:
-                // alle adressen zoeken
-                
-                ArrayList<Adres> adressenLijst = new ArrayList<>();
-                    adressenLijst = (ArrayList<Adres>)adresDao.readAll(Adres.class);
-                
-                if (adressenLijst != null) {
-                    System.out.println("Alle adressen in het adressenbestand");
-                    adresView.printAdressenLijst(adressenLijst);
-                }
-                break; 
-            case 3:
-                break;
-            default:
-                break;
-        }
-       
-    }
-    
-    public void wijzigAdresGegevens() {      
-                
-        userInput = adresView.hoeWiltUZoeken();
-        switch (userInput) {
-            case 1: 
-                updateOpAdresId();
-                break;
-//            case 2:
-//                updateOpStraatnaam();
-//                break;
-//            case 3:
-//                updateOpPostcodeHuisnummer();
-//                break;
-//            case 4:
-//                updateOpWoonplaats();
-//                break;
-            case 5:
-                break; // doorsturen einde switch; terug naar adres menu
-            default:
-                System.out.println("Die optie is niet beschikbaar, je keert terug naar het bestelling menu.");
-                break;
-        }
-        
-    }
-    
-    
-    public void updateOpAdresId() {
-                
-        Adres gewijzigdAdres;
-        long adresId = adresView.voerAdresIdIn();        
-        
-        adres = (Adres)adresDao.readById(adresId);
-        gewijzigdAdres = invoerNieuweAdresGegevens(adres);
-        
-        adresDao.update(adres);
-       
-        gewijzigdAdres = (Adres)adresDao.readById(adresId);
-        
-        System.out.println("Oude adresgegevens: ");
-        adresView.printAdresOverzicht(adres);
-        System.out.println("Nieuwe adresgegevens: ");                  
-        adresView.printAdresOverzicht(gewijzigdAdres);
-        
-       
-    }
-//    
-//    public void updateOpStraatnaam() {
-//        
-//        
-//        adres = new Adres();
-//        Adres gewijzigdAdres = new Adres();
-//        String straatnaam = adresView.voerStraatnaamIn();
-//        
-//        adressenLijst = adresDao.findByStraatNaam(straatnaam);
-//        updateOpAdresId();
-//        int adresId = adresView.voerAdresIdIn();
-//        adres = adresDao.findByAdresID(adresId);
-//        gewijzigdAdres = invoerNieuweAdresGegevens(adres);
-//        gewijzigdAdres = adresDao.updateGegevens(gewijzigdAdres);
-//        
-//        System.out.println("Oude adresgegevens: ");
-//        adresView.printAdresOverzicht(adres);
-//        System.out.println("Nieuwe adresgegevens: ");                  
-//        adresView.printAdresOverzicht(gewijzigdAdres);
-        
-//    }
-//    
-//    public void updateOpPostcodeHuisnummer() {
-//        
-//        
-//        adres = new Adres();
-//        Adres gewijzigdAdres = new Adres();
-//        int huisnummer = adresView.voerHuisnummerIn();
-//        String postcode = adresView.voerPostcodeIn();
-//        
-//        adressenLijst = adresDao.findByPostcodeHuisNummer(postcode, huisnummer);
-//        updateOpAdresId();
-////        int adresId = adresView.voerAdresIdIn();
-////        adres = adresDao.findByAdresID(adresId);
-////        gewijzigdAdres = invoerNieuweAdresGegevens(adres);
-////        gewijzigdAdres = adresDao.updateGegevens(gewijzigdAdres);
-////        
-////        System.out.println("Oude adresgegevens: ");
-////        adresView.printAdresOverzicht(adres);
-////        System.out.println("Nieuwe adresgegevens: ");                  
-////        adresView.printAdresOverzicht(gewijzigdAdres);
-//    }
-    
-    
-//    public void updateOpWoonplaats() {
-//     
-//        
-//        adres = new Adres();
-//        Adres gewijzigdAdres = new Adres();
-//        String woonplaats = adresView.voerWoonplaatsIn();
-//        
-//        adressenLijst = adresDao.findByWoonplaats(woonplaats);
-//        updateOpAdresId();
-////        int adresId = adresView.voerAdresIdIn();
-////        adres = adresDao.findByAdresID(adresId);
-////        gewijzigdAdres = invoerNieuweAdresGegevens(adres);
-////        gewijzigdAdres = adresDao.updateGegevens(gewijzigdAdres);
-////        
-////        System.out.println("Oude adresgegevens: ");
-////        adresView.printAdresOverzicht(adres);
-////        System.out.println("Nieuwe adresgegevens: ");                  
-////        adresView.printAdresOverzicht(gewijzigdAdres);
-//    }
     
     
     public Adres invoerNieuweAdresGegevens(Adres adres) {
@@ -311,104 +140,99 @@ public class AdresService {
     }
     
     
-    public void verwijderAdresGegevens() {        
-              
-        boolean isDeletedInAdres = false;
-        boolean isDeletedInKlantAdres = false;
+    public void zoekAdresKlantGegevens(){
         
-        userInput = adresView.printVerwijderAdresMenu();
-        switch (userInput) {
-            case 1:                
-                System.out.println("Voer het adres id in: ");
-                Long adresId = adresView.voerAdresIdIn();
-                
-                isDeletedInAdres = adresDao.deleteById(adresId);
+        long klantId; 
+        userInput = adresView.menuAdresKlantZoeken();
+       
+        switch(userInput){
+           case 1: // adres(sen) bij klantId
+               klantId = klantView.voerKlantIdIn();
+               ArrayList<Adres>adressenLijst = klantAdresDao.findAdresByKlantId(klantId);
+               adresView.printAdressenLijst(adressenLijst);
+               break;
+           case 2: // alle adressen bij klanten opzoeken
+               ArrayList<KlantAdres> klantAdresLijst = klantAdresDao.findAll();
+               adresView.printKlantAdresLijst(klantAdresLijst);
+               int keuze = adresView.alleKoppellingenUitgeprint();
+               switch(keuze){
+                   case 1: // ja
+                        for (int i = 0 ; i < klantAdresLijst.size(); i++){
+                            long adresId = klantAdresLijst.get(i).getAdresId();
+                            klantId = klantAdresLijst.get(i).getKlantId();
+                            adres = adresDao.findByAdresID(adresId);
+                            Klant klant = klantDao.findByKlantId(klantId);
+                            System.out.println("Onderstaand adres:");
+                            adresView.printAdresOverzicht(adres);                           
+                            System.out.println("hoort bij: ");
+                            klantView.printKlantGegevens(klant);
+                            
+                        }
+                            break;
+                    case 2: // nee   
+                        break;
                
-                System.out.println("verwijderen van adres: " + isDeletedInAdres);               
-                    break;           
-//                isDeletedInKlantAdres = klantAdresDao.deleteKlantAdresByAdresId(adresId);
-//                if (isDeletedInAdres == true && isDeletedInKlantAdres == true) {
-//                    System.out.println("Het volgende adres is verwijderd uit het bestand: ");
-//                    System.out.println();
-//                    adresView.printAdresOverzicht(adres);
-//                    System.out.println("Alle koppelingen van klant met adres zijn ook verwijderd.");
-//                }
-//                else {
-//                    System.out.println("Het volgende adres is NIET verwijderd uit het bestand: ");
-//                    System.out.println();
-//                    adresView.printAdresOverzicht(adres);
-//                }   
-                
-            case 2:
-                userInput = adresView.bevestigingsVraag();
-                if (userInput == 1) {
-                   
-                    int rowsAffected = adresDao.deleteAll(Adres.class);
-                    
-                    //klantAdresDao.deleteAll();
-                    System.out.print(rowsAffected);
-                    System.out.println(" totaal aantal adressen zijn verwijderd"); 
-                   
-                   // adresDao.deleteAll(session);
-//                    isDeletedInKlantAdres = klantAdresDao.deleteAll();
-//                    System.out.println("Alle adressen zijn verwijderd.");                    
-//                    System.out.println("alle koppelingen van klant en adres zijn verwijderd");
-                }
-                if (userInput ==2) {
-                    System.out.println("De adresgegevens zijn niet verwijderd.");
-                    break;
-                }                
-            case 3:
+               }
+               break;
+           case 3:
                 break;
             default:
                 break;
-        }
-                     
+           
+       }
+      
     }
-    
-//    public void zoekAdresKlantGegevens(){
-//        
-//        long klantId; 
-//        userInput = adresView.menuAdresKlantZoeken();
-//       
-//        switch(userInput){
-//           case 1: // adres(sen) bij klantId
-//               klantId = klantView.voerKlantIdIn();
-//               ArrayList<Adres>adressenLijst = klantAdresDao.findAdresByKlantId(klantId);
-//               adresView.printAdressenLijst(adressenLijst);
-//               break;
-//           case 2: // alle adressen bij klanten opzoeken
-//               ArrayList<KlantAdres> klantAdresLijst = klantAdresDao.findAll();
-//               adresView.printKlantAdresLijst(klantAdresLijst);
-//               int keuze = adresView.alleKoppellingenUitgeprint();
-//               switch(keuze){
-//                   case 1: // ja
-//                        for (int i = 0 ; i < klantAdresLijst.size(); i++){
-//                            long adresId = klantAdresLijst.get(i).getAdresId();
-//                            klantId = klantAdresLijst.get(i).getKlantId();
-//                            adres = adresDao.findByAdresID(adresId);
-//                            Klant klant = klantDao.findByKlantId(klantId);
-//                            System.out.println("Onderstaand adres:");
-//                            adresView.printAdresOverzicht(adres);                           
-//                            System.out.println("hoort bij: ");
-//                            klantView.printKlantGegevens(klant);
-//                            
-//                        }
-//                            break;
-//                    case 2: // nee   
-//                        break;
-//               
-//               }
-//               break;
-//           case 3:
-//                break;
-//            default:
-//                break;
-//           
-//       }
-//       adresMenu();
-//    }
-//    
-//    
+
+    @Override
+    public Adres voegNieuweBeanToe(Long Id) {         
+         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Long voegNieuweBeanToe(Adres t) {
+        Long adresId = (Long)adresDao.insert(adres);
+        return adresId;
+    }
+
+    @Override
+    public Adres zoekNaarBean(Long Id) {
+        adres = (Adres)adresDao.readById(Id);
+        return adres; 
+    }
+
+    @Override
+    public Long zoekNaarBean(Adres t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Adres> zoekAlleBeans() {  
+        ArrayList<Adres> adressenLijst = new ArrayList<>();
+            adressenLijst = (ArrayList<Adres>)adresDao.readAll(Adres.class);
+            return adressenLijst; 
+    }
+
+    @Override
+    public Adres wijzigBeanGegevens(Long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Adres wijzigBeanGegevens(Adres t) {
+        adresDao.update(t);        
+        return t;
+    }
+
+    @Override
+    public boolean verwijderBeanGegevens(Long Id) {
+        boolean isDeletedInAdres = adresDao.deleteById(Id);
+        return isDeletedInAdres;
+    }
+
+    @Override
+    public int verwijderAlleBeans() {
+        int rowsAffected = adresDao.deleteAll(Adres.class);
+        return rowsAffected; 
+    }
    
 }
