@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 // PK primary key
 @Service
+@Transactional
 public interface GenericDaoInterface <T, PK extends Serializable>{
    
     // alle dao methoden? 

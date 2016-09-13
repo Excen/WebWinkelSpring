@@ -29,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional
-public abstract class GenericDaoImpl <T, PK extends Serializable>  { 
+public abstract class GenericDaoImpl <T, PK extends Serializable> { 
     
     private static final Logger log = LoggerFactory.getLogger(GenericDaoImpl.class);
     
@@ -39,7 +39,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     @Autowired 
     private SessionFactory sessionFactory;
     
-    @Bean  
+    @Bean(name="sessionBean") 
     protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }

@@ -19,7 +19,6 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.stereotype.Component;
 
 @Component
-@Entity
 @Table(name = "ARTIKEL", uniqueConstraints = {
 		@UniqueConstraint(columnNames = "ARTIKELNR"),
                 @UniqueConstraint(columnNames = "ARTIKELNAAM")})

@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
  * @author Excen
  */
 @Component
-@Entity
 @Table(name = "BETALING" )
 public class Betaling implements Serializable {
 

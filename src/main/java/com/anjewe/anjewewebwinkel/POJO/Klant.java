@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,10 @@ public class Klant implements Serializable {
     @Column(nullable = false)
     private String email;     
      
-    @OneToOne  (mappedBy = "klant")
+   
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
     protected Account account;    
     
     // deze is niet of wel nodig?
@@ -59,9 +63,9 @@ public class Klant implements Serializable {
 
     
     // -- constructors --
-    public Klant(){        
-    }
     
+    protected Klant(){}
+     
     public Klant(String voornaam, String achternaam, 
              String tussenvoegsel, String email){ 
         

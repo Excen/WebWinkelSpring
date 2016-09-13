@@ -28,11 +28,16 @@ public class AppController {
 
 private static final Logger log = LoggerFactory.getLogger(AppController.class);
 
+    
     @Autowired 
-    GenericServiceInterface<Account, Long> accountService = new AccountService();
+    GenericServiceInterface<Account, Long> accountService;
 
     @Autowired
     MessageSource messageSource;
+
+    public AppController() {
+        this.accountService = new AccountService();
+    }
 
     /**
      * Lijst bestaande accounts
@@ -65,6 +70,10 @@ private static final Logger log = LoggerFactory.getLogger(AppController.class);
     /**
      * This method will be called on form submission, handling POST request for
      * saving user in database. It also validates the user input
+     * @param account
+     * @param result
+     * @param model
+     * @return 
      */
     @RequestMapping(value = { "/nieuwaccount" }, method = RequestMethod.POST)
     public String saveAccount(@Valid Account account, BindingResult result,
@@ -104,6 +113,9 @@ validation
 // 
     /**
      * This method will provide the medium to update an existing user.
+     * @param Id
+     * @param model
+     * @return 
      */
     @RequestMapping(value = { "/edit-account-{Id}" }, method = RequestMethod.GET)
     public String editUser(@PathVariable Long Id, ModelMap model) {
@@ -116,6 +128,11 @@ validation
     /**
      * This method will be called on form submission, handling POST request for
      * updating user in database. It also validates the user input
+     * @param account
+     * @param result
+     * @param model
+     * @param Id
+     * @return 
      */
     @RequestMapping(value = { "/edit-account-{Id}" }, method = RequestMethod.POST)
     public String updateUser(@Valid Account account, BindingResult result,
@@ -146,6 +163,8 @@ validation
      
     /**
      * This method will delete an user by it's ID value.
+     * @param Id
+     * @return 
      */
     @RequestMapping(value = { "/delete-account-{Id}" }, method = RequestMethod.GET)
     public String deleteUser(@PathVariable Long Id) {

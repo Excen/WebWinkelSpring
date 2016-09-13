@@ -10,6 +10,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @author Anne
  */
 @Configuration
+@EnableTransactionManagement
 @ComponentScan(basePackages = {"com.anjewe.anjewewebwinkel.Controller","com.anjewe.anjewewebwinkel.DAOs",
             "com.anjewe.anjewewebwinkel.POJO", "com.anjewe.anjewewebwinkel.Config",
             "com.anjewe.anjewewebwinkel.DAOGenerics", "com.anjewe.anjewewebwinkel.Service"},
@@ -35,7 +37,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
     })
 @PropertySource(value = {"classpath:database.properties"})
-@EnableTransactionManagement
 public class RootConfig {
     
     // datafields
@@ -74,7 +75,7 @@ public DataSource dataSource() throws SQLException{
     properties.put("hibernate.show_sql", env.getRequiredProperty(HIBERNATE_SHOW_SQL));
     properties.put("hibernate.format_sql", env.getRequiredProperty(HIBERNATE_FORMAT_SQL));
     properties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty(HIBERNATE_HBM2DDL));
-return properties; 
+    return properties; 
 }
 
 
@@ -83,14 +84,12 @@ return properties;
     public LocalSessionFactoryBean sessionFactory() throws SQLException {
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
     sessionFactory.setDataSource(dataSource());
-    sessionFactory.setPackagesToScan(new String[] { "com.anjewe.anjewewebwinkel" });
     sessionFactory.setHibernateProperties(connectionProperties());
     sessionFactory.setPackagesToScan(env.getRequiredProperty(ENTITYMANAGER_PACKAGES_TO_SCAN).split("#"));
      
     return sessionFactory;
  }
-
-    // transactionmanager Bean
+    
  @Bean
  @Autowired
  public HibernateTransactionManager transactionManager(SessionFactory s) throws SQLException {
@@ -100,8 +99,16 @@ return properties;
     return transactionManager;
  }
     
+//    // transactionmanager Bean
+// @Bean
+// @Autowired
+// public HibernateTransactionManager transactionManager() throws SQLException {
+//    HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+//    transactionManager.setSessionFactory(sessionFactory().getObject());
+//    
+//    return transactionManager;
+// }
     
-    
-    
+
     
 }

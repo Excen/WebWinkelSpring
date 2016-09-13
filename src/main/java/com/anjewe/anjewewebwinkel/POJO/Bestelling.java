@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,6 @@ import org.springframework.stereotype.Component;
  * @author Excen
  */
 @Component
-@Entity
 @Table(name = "BESTELLING")
 public class Bestelling implements Serializable {
     
@@ -44,7 +44,8 @@ public class Bestelling implements Serializable {
     @OneToMany (fetch = FetchType.LAZY, mappedBy = "pk.bestelling", cascade = CascadeType.ALL)
     private Set<BestellingArtikel> bestellingArtikellen = new HashSet<>();
     
-    @OneToOne (mappedBy = "bestelling")
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
     private Factuur factuur; 
 
     /*

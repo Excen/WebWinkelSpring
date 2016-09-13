@@ -8,6 +8,7 @@ package com.anjewe.anjewewebwinkel.POJO;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Component;
  * @author Excen
  */
 @Component
+@Entity
 @Table(name = "ACCOUNT") 
 public class Account implements Serializable {
   
@@ -39,13 +41,14 @@ public class Account implements Serializable {
     @Column(nullable = false)  // hoe werkt het met een paswoord
     private String password;
     
-    @OneToOne (fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name ="KLANT_ID")// hoe zit de relatie met klant?
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "account", cascade = CascadeType.ALL)            
     private Klant klant;
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private java.util.Date creatieDatum;
 
+//    protected Account(){}
+    public Account (){}
     /**
      * @return the Id
      */

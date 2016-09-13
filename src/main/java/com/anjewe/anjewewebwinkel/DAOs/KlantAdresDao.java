@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Wendy
  */
-@Transactional
-@Repository
+//@Transactional
+//@Repository
 public class KlantAdresDao  extends GenericDaoImpl <KlantAdres, Long> {
 
 private static final Logger log = LoggerFactory.getLogger(KlantAdresDao.class);
