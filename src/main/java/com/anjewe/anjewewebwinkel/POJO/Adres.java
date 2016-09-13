@@ -27,7 +27,6 @@ import org.springframework.stereotype.Component;
  * @author Excen
  */
 @Component
-@Entity
 @Table(name = "ADRES", uniqueConstraints = {
 		@UniqueConstraint(columnNames = {"huisnummer","toevoeging","postcode"}) })
 public class Adres implements Serializable {       

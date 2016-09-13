@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
  * @author Excen
  */
 @Component
-@Entity
 @Table (name = "FACTUUR")
 public class Factuur implements Serializable {   
     
@@ -50,8 +49,7 @@ public class Factuur implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "factuur")
     private Set<Betaling> betalingset;
     
-    @OneToOne (fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "BESTELLING_ID")
+    @OneToOne (fetch = FetchType.EAGER, mappedBy = "factuur", cascade = CascadeType.ALL)
     protected Bestelling bestelling;
     
     

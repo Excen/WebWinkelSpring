@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
  * @author Excen
  */
 @Component
-@Entity
 @Table (name ="BESTELLINGARTIKEL")
 @AssociationOverrides({
 		@AssociationOverride(name = "pk.bestelling",

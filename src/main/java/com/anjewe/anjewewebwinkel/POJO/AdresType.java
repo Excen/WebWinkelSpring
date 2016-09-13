@@ -18,7 +18,7 @@ import javax.persistence.Table;
 /**
  * @author Wendy
  */
-@Entity
+
 @Table(name= "ADRESTYPE")
 public class AdresType implements Serializable{
     
