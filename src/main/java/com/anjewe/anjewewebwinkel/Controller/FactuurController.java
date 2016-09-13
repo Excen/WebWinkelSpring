@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @RequestMapping({"/", "/factuur"}) // wat doet dit specifiek?
-@SessionAttributes("roles")
+@SessionAttributes()
 public class FactuurController {
 
 private static final Logger log = LoggerFactory.getLogger(FactuurController.class);

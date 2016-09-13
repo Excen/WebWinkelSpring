@@ -10,8 +10,6 @@ import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.DAOs.AdresDao;
 import com.anjewe.anjewewebwinkel.POJO.Adres;
 import java.util.ArrayList;
-import com.anjewe.anjewewebwinkel.POJO.Klant;
-import com.anjewe.anjewewebwinkel.POJO.KlantAdres;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +22,9 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class AdresService extends AdresDao implements GenericServiceInterface <Adres, Long>{
+public class AdresService implements GenericServiceInterface <Adres, Long>{
      
-    AdresService(){        
-    }
+    
     
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel");
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.err");
@@ -37,8 +34,7 @@ public class AdresService extends AdresDao implements GenericServiceInterface <A
    Adres adres;    
    ArrayList<Adres> adressenLijst = new ArrayList();
    @Autowired
-   GenericDaoImpl <Adres, Long> adresDao;
-  
+    protected GenericDaoImpl<Adres, Long> adresDao = new AdresDao();
     
 
     @Override
@@ -48,7 +44,7 @@ public class AdresService extends AdresDao implements GenericServiceInterface <A
 
     @Override
     public Long voegNieuweBeanToe(Adres t) {
-        Long adresId = (Long)adresDao.insert(adres);
+        Long adresId = adresDao.insert(adres);
         return adresId;
     }
 
@@ -76,7 +72,7 @@ public class AdresService extends AdresDao implements GenericServiceInterface <A
 
     @Override
     public Adres wijzigBeanGegevens(Adres adres) {
-        Adres gewijzigdAdres = adresDao.readById(adres.getId());
+        Adres gewijzigdAdres = (Adres)adresDao.readById(adres.getId());
         if (gewijzigdAdres!= null){
             gewijzigdAdres.setStraatnaam(adres.getStraatnaam());
             gewijzigdAdres.setPostcode(adres.getPostcode());

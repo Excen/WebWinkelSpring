@@ -6,8 +6,11 @@
 package com.anjewe.anjewewebwinkel.Service;
 
 import com.anjewe.anjewewebwinkel.Controller.*;
+import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
+import com.anjewe.anjewewebwinkel.POJO.Account;
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -18,6 +21,7 @@ import java.util.List;
  */
 public interface GenericServiceInterface <T, PK extends Serializable> {
     
+     
     //invoer - opslaan
     public T voegNieuweBeanToe(Long Id);
     public Long voegNieuweBeanToe(T t);

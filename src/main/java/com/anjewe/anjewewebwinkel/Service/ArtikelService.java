@@ -14,11 +14,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ArtikelService extends ArtikelDao implements GenericServiceInterface <Artikel, Long> {  
-    
-    public ArtikelService (){
-        
-    }
+public class ArtikelService implements GenericServiceInterface <Artikel, Long> {  
     
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel");
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.err");
@@ -48,7 +44,7 @@ public class ArtikelService extends ArtikelDao implements GenericServiceInterfac
     
     @Override
     public Artikel zoekNaarBean(Long Id) {
-        artikel = artikelDao.readById(Id);
+        artikel = (Artikel)artikelDao.readById(Id);
         return artikel;
     }
 
@@ -72,7 +68,7 @@ public class ArtikelService extends ArtikelDao implements GenericServiceInterfac
     @Override
     public Artikel wijzigBeanGegevens(Artikel artikel) {
         
-        gewijzigdArtikel= artikelDao.readById(artikel.getId());
+        gewijzigdArtikel= (Artikel)artikelDao.readById(artikel.getId());
         if (gewijzigdArtikel!= null){
             gewijzigdArtikel.setArtikelNaam(artikel.getArtikelNaam());
             gewijzigdArtikel.setArtikelPrijs(artikel.getArtikelPrijs());

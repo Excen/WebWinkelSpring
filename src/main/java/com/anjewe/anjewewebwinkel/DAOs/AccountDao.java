@@ -11,9 +11,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Wendy
+ * @param <Account>
+ * @param <Long>
  */
 @Component
-public abstract class AccountDao extends GenericDaoImpl <Account, Long>{
+public class AccountDao  extends GenericDaoImpl <Account, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(AccountDao.class);
 

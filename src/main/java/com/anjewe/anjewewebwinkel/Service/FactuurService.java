@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  * @author Wendy
  */
 @Component
-public class FactuurService extends FactuurDao implements GenericServiceInterface <Factuur, Long>{
+public class FactuurService implements GenericServiceInterface <Factuur, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
@@ -28,7 +28,7 @@ private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
     @Autowired
     Factuur gewijzigdeFactuur;   
     @Autowired
-    GenericDaoImpl<Factuur, Long> factuurDao;  
+    GenericDaoImpl<Factuur, Long> factuurDao = new FactuurDao();  
     
    
        
@@ -40,7 +40,7 @@ private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
     @Override
     public Long voegNieuweBeanToe(Factuur factuur) {
-       Long factuurId = (Long)factuurDao.insert(factuur); 
+       Long factuurId = factuurDao.insert(factuur); 
        return factuurId; 
     }
 
@@ -71,7 +71,7 @@ private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
     @Override // wat hier wel niet willen en kunnen wijzigen. ook ivm onderlinge relaties
     public Factuur wijzigBeanGegevens(Factuur factuur) {
-       gewijzigdeFactuur = factuurDao.readById(factuur.getId());
+       gewijzigdeFactuur = (Factuur)factuurDao.readById(factuur.getId());
         if (gewijzigdeFactuur!= null){
             gewijzigdeFactuur.setKlant(factuur.getKlant());
             gewijzigdeFactuur.setFactuurnummer(factuur.getFactuurnummer());

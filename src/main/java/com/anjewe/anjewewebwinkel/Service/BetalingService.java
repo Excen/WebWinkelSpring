@@ -17,12 +17,12 @@ import org.springframework.stereotype.Component;
  * @author Wendy
  */
 @Component
-public class BetalingService extends BetalingDao implements GenericServiceInterface<Betaling, Long>{
+public class BetalingService implements GenericServiceInterface<Betaling, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(BetalingService.class);
 
     @Autowired 
-    GenericDaoImpl <Betaling, Long> betalingDao;  
+    GenericDaoImpl <Betaling, Long> betalingDao = new BetalingDao();  
     @Autowired
     Betaling betaling;  
     @Autowired
@@ -38,7 +38,7 @@ private static final Logger log = LoggerFactory.getLogger(BetalingService.class)
 
     @Override
     public Long voegNieuweBeanToe(Betaling betaling) {
-         betalingId = (Long)betalingDao.insert(betaling); 
+         betalingId = betalingDao.insert(betaling); 
          return betalingId;
     }
 
@@ -68,7 +68,7 @@ private static final Logger log = LoggerFactory.getLogger(BetalingService.class)
     @Override
     public Betaling wijzigBeanGegevens(Betaling betaling) {
         
-        gewijzigdeBetaling = betalingDao.readById(betaling.getId());
+        gewijzigdeBetaling = (Betaling)betalingDao.readById(betaling.getId());
         if (gewijzigdeBetaling!= null){
             gewijzigdeBetaling.setBetalingsGegevens(betaling.getBetalingsGegevens());
             gewijzigdeBetaling.setFactuur(betaling.getFactuur());

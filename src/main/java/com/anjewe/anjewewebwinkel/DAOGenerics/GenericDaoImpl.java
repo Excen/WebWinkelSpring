@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Repository;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <T>
  * @param <PK>
  */
-
+@Repository
 @Transactional
 public abstract class GenericDaoImpl <T, PK extends Serializable>  { 
     
@@ -35,10 +37,9 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     protected Class<T> beanType;
     
     @Autowired 
-    @Qualifier ("sessionBean")
     private SessionFactory sessionFactory;
     
-      
+    @Bean  
     protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }

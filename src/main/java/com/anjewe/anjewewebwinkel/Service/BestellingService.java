@@ -25,19 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class BestellingService extends BestellingDao implements GenericServiceInterface <Bestelling, Long> {
+public class BestellingService implements GenericServiceInterface <Bestelling, Long> {
     
-    BestellingService(){
-        
-    }
-    
+       
     // Data fields
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.webshop");
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.webshop.err");
     private static final Logger testLogger = (Logger) LoggerFactory.getLogger("com.webshop.test");
     
     @Autowired
-    protected GenericDaoImpl<Bestelling, Long> bestellingDao; 
+    protected GenericDaoImpl<Bestelling, Long> bestellingDao = new BestellingDao(); 
     
     @Autowired
     Bestelling bestelling;
@@ -54,7 +51,7 @@ public class BestellingService extends BestellingDao implements GenericServiceIn
 
     @Override
     public Long voegNieuweBeanToe(Bestelling t) {
-        Long bestellingId = (Long)bestellingDao.insert(t);
+        Long bestellingId = bestellingDao.insert(t);
         return bestellingId;
     }
 
@@ -82,7 +79,7 @@ public class BestellingService extends BestellingDao implements GenericServiceIn
 
     @Override
     public Bestelling wijzigBeanGegevens(Bestelling t) {
-        gewijzigdeBestelling = bestellingDao.readById(t.getId());
+        gewijzigdeBestelling = (Bestelling)bestellingDao.readById(t.getId());
         if (gewijzigdeBestelling != null){
             gewijzigdeBestelling.setFactuur(t.getFactuur());
             gewijzigdeBestelling.setId(t.getId());
