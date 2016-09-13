@@ -11,9 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
-@Component
+@Service
+@Transactional
 public class ArtikelService implements GenericServiceInterface <Artikel, Long> {  
     
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel");
@@ -38,7 +41,7 @@ public class ArtikelService implements GenericServiceInterface <Artikel, Long> {
 
     @Override
     public Long voegNieuweBeanToe(Artikel artikel) {
-         long id = artikelDao.insert(artikel);  
+         long id = (Long)artikelDao.insert(artikel);  
          return id; 
     }
     

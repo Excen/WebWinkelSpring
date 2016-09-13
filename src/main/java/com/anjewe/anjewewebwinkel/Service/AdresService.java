@@ -15,13 +15,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Anne
  */
-
-@Component
+@Service
+@Transactional
 public class AdresService implements GenericServiceInterface <Adres, Long>{
      
     
@@ -44,7 +47,7 @@ public class AdresService implements GenericServiceInterface <Adres, Long>{
 
     @Override
     public Long voegNieuweBeanToe(Adres t) {
-        Long adresId = adresDao.insert(adres);
+        Long adresId = (Long)adresDao.insert(adres);
         return adresId;
     }
 

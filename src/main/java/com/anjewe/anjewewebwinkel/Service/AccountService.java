@@ -12,20 +12,26 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Wendy
  */
 
 @Transactional
-@Service // specialization of @Component
+@Repository
+@Qualifier ("accountservice")// specialization of @Component
 public class AccountService implements GenericServiceInterface <Account, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     
+    public AccountService(){
+        
+    }
       
     @Autowired
     protected GenericDaoImpl<Account, Long> accountDao = new AccountDao();
@@ -44,7 +50,8 @@ private static final Logger log = LoggerFactory.getLogger(AccountService.class);
         return accountId;
     }
 
-    @Bean
+  
+    
     @Override
     public Account zoekNaarBean(Long Id) {
         account = new Account();

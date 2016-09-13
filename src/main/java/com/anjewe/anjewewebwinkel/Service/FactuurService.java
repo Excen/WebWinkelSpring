@@ -13,11 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Wendy
  */
-@Component
+@Service
+@Transactional
 public class FactuurService implements GenericServiceInterface <Factuur, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
@@ -40,7 +42,7 @@ private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
     @Override
     public Long voegNieuweBeanToe(Factuur factuur) {
-       Long factuurId = factuurDao.insert(factuur); 
+       Long factuurId = (Long)factuurDao.insert(factuur); 
        return factuurId; 
     }
 

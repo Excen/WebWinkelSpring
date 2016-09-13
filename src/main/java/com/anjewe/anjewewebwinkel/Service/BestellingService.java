@@ -51,7 +51,7 @@ public class BestellingService implements GenericServiceInterface <Bestelling, L
 
     @Override
     public Long voegNieuweBeanToe(Bestelling t) {
-        Long bestellingId = bestellingDao.insert(t);
+        Long bestellingId =(Long)bestellingDao.insert(t);
         return bestellingId;
     }
 

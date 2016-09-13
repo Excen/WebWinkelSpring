@@ -7,14 +7,16 @@ import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.POJO.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Wendy
  * @param <Account>
  * @param <Long>
  */
-@Component
+@Repository
+@Transactional
 public class AccountDao  extends GenericDaoImpl <Account, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(AccountDao.class);
@@ -24,7 +26,7 @@ private static final Logger log = LoggerFactory.getLogger(AccountDao.class);
         super();
     }
 
-
+    
     public Account readByUsername(){
        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
