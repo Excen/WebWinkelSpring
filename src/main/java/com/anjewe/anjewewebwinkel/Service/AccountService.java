@@ -29,10 +29,14 @@ public class AccountService implements GenericServiceInterface <Account, Long>{
 private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     
       
-    @Autowired
-    protected GenericDaoImpl<Account, Long> accountDao = new AccountDao();
+    @Autowired 
+    protected GenericDaoImpl<Account, Long> accountDao;
     @Autowired
     Account account; 
+
+    public AccountService() {
+        this.accountDao = new AccountDao();
+    }
 
     
     @Override
@@ -50,7 +54,6 @@ private static final Logger log = LoggerFactory.getLogger(AccountService.class);
   
     @Override
     public Account zoekNaarBean(Long Id) {
-        account = new Account();
         account = (Account)accountDao.readById(Id); 
         return account; 
     }
@@ -83,7 +86,7 @@ private static final Logger log = LoggerFactory.getLogger(AccountService.class);
      * Just fetch the entity from db and update it with proper values within transaction.
      * It will be updated in db once transaction ends. 
      */
-    @Bean
+    
     @Override
     public Account wijzigBeanGegevens(Account account){
         Account gewijzigdAccount = new Account();
