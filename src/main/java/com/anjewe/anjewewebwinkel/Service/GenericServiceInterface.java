@@ -8,6 +8,7 @@ package com.anjewe.anjewewebwinkel.Service;
 import java.io.Serializable;
 import java.util.List;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @param <PK>
  * @param <Long>
  */
-@Repository
+@Service
 @Transactional
 public interface GenericServiceInterface <T, PK extends Serializable> {
     

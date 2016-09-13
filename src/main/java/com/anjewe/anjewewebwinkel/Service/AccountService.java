@@ -23,20 +23,17 @@ import org.springframework.stereotype.Repository;
  */
 
 @Transactional
-@Repository
-@Qualifier ("accountservice")// specialization of @Component
+@Service
 public class AccountService implements GenericServiceInterface <Account, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     
-    public AccountService(){
-        
-    }
       
     @Autowired
     protected GenericDaoImpl<Account, Long> accountDao = new AccountDao();
     @Autowired
     Account account; 
+
     
     @Override
     public Account voegNieuweBeanToe(Long Id) {
@@ -51,7 +48,6 @@ private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     }
 
   
-    
     @Override
     public Account zoekNaarBean(Long Id) {
         account = new Account();

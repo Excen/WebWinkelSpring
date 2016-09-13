@@ -6,22 +6,17 @@ import com.anjewe.anjewewebwinkel.Service.AccountService;
 import com.anjewe.anjewewebwinkel.POJO.Account;
 import com.anjewe.anjewewebwinkel.Service.GenericServiceInterface;
 import java.util.List;
-import java.util.Locale;
 import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  * @author Wendy
@@ -29,28 +24,15 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 @Controller
-@Transactional
-@RequestMapping({"/", "/home"}) // wat doet dit specifiek?
-@SessionAttributes() // wat doet dit specifiek?
 public class AppController {
 
 private static final Logger log = LoggerFactory.getLogger(AppController.class);
 
     @Autowired 
-    @Qualifier("accountservice")
     GenericServiceInterface<Account, Long> accountService = new AccountService();
 
-//        @Autowired(required = true)
-//        public void setGenericServiceInterface(GenericServiceInterface accountService) {
-//            this.accountService= accountService;
-//        }
-//    
-    @Autowired
-    Account account;
     @Autowired
     MessageSource messageSource;
-
-    
 
     /**
      * Lijst bestaande accounts

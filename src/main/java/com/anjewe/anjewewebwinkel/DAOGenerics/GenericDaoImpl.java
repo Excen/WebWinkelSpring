@@ -56,7 +56,6 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     // **CRUD methodes** //     
     
      // -- werkt
-    @Transactional
     public long insert(T t) {        
         log.info(beanType.getSimpleName() + " creeeren in de database. Return id");
         
@@ -67,7 +66,6 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     
     
      // -- werkt
-    @Transactional
     public T readById(PK id) {
         System.out.println(beanType.getSimpleName() + " via Id lezen uit de database");
         
@@ -78,7 +76,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     
     
      // -- nog niet getest  >> bv adressen behorende bij klant ophalen
-    @Transactional
+   
     public <T> List<T> read(PK id, Class<T> type) {         
         log.info(beanType.getSimpleName() + " via Id lijst opvragen uit de database");
         
@@ -95,7 +93,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
 
     @SuppressWarnings("unchecked")
      // -- werkt
-    @Transactional
+   
     public <T> List<T> readAll(Class<T> type){ 
         log.info(beanType.getSimpleName()+ ": Lijst met alle objecten ophalen");       
         
@@ -105,7 +103,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
    
 
    // -- werkt
-   @Transactional
+  
     public void update(T t) {        
         log.info(beanType.getSimpleName() + " Object update.");  
         
@@ -114,7 +112,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
 
     
      // -- nog  neit getest. overbodig??
-    @Transactional
+    
     public boolean delete(T t) {        
        log.info(beanType.getSimpleName() + " Object delete.");   
        
@@ -126,7 +124,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     }
 
      //-- werkt 
-    @Transactional
+  
     public boolean deleteById(PK id) {        
         log.info(beanType.getSimpleName() + " Object delete."); 
         
@@ -139,7 +137,7 @@ public abstract class GenericDaoImpl <T, PK extends Serializable>  {
     }    
 
     // -- werkt
-    @Transactional
+   
     public int deleteAll(Class<T> type) {
         log.info(beanType.getSimpleName() + "delete all"); 
         int count = 0; 

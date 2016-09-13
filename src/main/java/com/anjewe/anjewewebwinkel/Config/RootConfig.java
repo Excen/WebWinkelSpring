@@ -28,7 +28,9 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
  * @author Anne
  */
 @Configuration
-@ComponentScan(basePackages = {"com.anjewe.anjewewebwinkel.Controller","com.anjewe.anjewewebwinkel.DAOs"},
+@ComponentScan(basePackages = {"com.anjewe.anjewewebwinkel.Controller","com.anjewe.anjewewebwinkel.DAOs",
+            "com.anjewe.anjewewebwinkel.POJO", "com.anjewe.anjewewebwinkel.Config",
+            "com.anjewe.anjewewebwinkel.DAOGenerics", "com.anjewe.anjewewebwinkel.Service"},
         excludeFilters = {
         @Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)
     })
@@ -83,6 +85,7 @@ return properties;
     sessionFactory.setDataSource(dataSource());
     sessionFactory.setPackagesToScan(new String[] { "com.anjewe.anjewewebwinkel" });
     sessionFactory.setHibernateProperties(connectionProperties());
+    sessionFactory.setPackagesToScan(env.getRequiredProperty(ENTITYMANAGER_PACKAGES_TO_SCAN).split("#"));
      
     return sessionFactory;
  }

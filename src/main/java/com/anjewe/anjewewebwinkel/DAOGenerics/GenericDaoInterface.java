@@ -9,7 +9,7 @@ package com.anjewe.anjewewebwinkel.DAOGenerics;
 import java.io.Serializable;
 import java.util.List;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -20,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 // PK primary key
-@Repository
-@Transactional
+@Service
 public interface GenericDaoInterface <T, PK extends Serializable>{
    
     // alle dao methoden? 
