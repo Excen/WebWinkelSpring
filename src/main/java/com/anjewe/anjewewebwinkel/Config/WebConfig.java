@@ -20,7 +20,9 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan({"anjewewebwinkel.Controller", "anjewewebwinkel.POJO","anjewewebwinkel.Helpers", "anjewewebwinkel.DAOs" } ) 
+@ComponentScan({"com.anjewe.anjewewebwinkel.Controller","com.anjewe.anjewewebwinkel.DAOs",
+            "com.anjewe.anjewewebwinkel.POJO", "com.anjewe.anjewewebwinkel.Config",
+            "com.anjewe.anjewewebwinkel.DAOGenerics", "com.anjewe.anjewewebwinkel.Service"} ) 
 public class WebConfig extends WebMvcConfigurerAdapter {
     
     @Bean

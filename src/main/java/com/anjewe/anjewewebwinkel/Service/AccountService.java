@@ -12,28 +12,28 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Wendy
  */
+
 @Transactional
-@Service // specialization of @Component
-public class AccountService extends AccountDao implements GenericServiceInterface <Account, Long> {
+@Service
+public class AccountService implements GenericServiceInterface <Account, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     
       
     @Autowired
-    protected GenericDaoImpl<Account, Long> accountDao;  
+    protected GenericDaoImpl<Account, Long> accountDao = new AccountDao();
+    @Autowired
+    Account account; 
 
-    @Autowired
-    Account account;
-    @Autowired
-    Account gewijzigdAccount; 
-   
     
     @Override
     public Account voegNieuweBeanToe(Long Id) {
@@ -43,13 +43,14 @@ private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     @Override
     public Long voegNieuweBeanToe(Account account) {  
         
-        Long accountId = (Long)accountDao.insert(account);              
+        Long accountId = accountDao.insert(account);              
         return accountId;
     }
 
+  
     @Override
     public Account zoekNaarBean(Long Id) {
-        
+        account = new Account();
         account = (Account)accountDao.readById(Id); 
         return account; 
     }
@@ -82,9 +83,11 @@ private static final Logger log = LoggerFactory.getLogger(AccountService.class);
      * Just fetch the entity from db and update it with proper values within transaction.
      * It will be updated in db once transaction ends. 
      */
+    @Bean
     @Override
     public Account wijzigBeanGegevens(Account account){
-        gewijzigdAccount = accountDao.readById(account.getId());
+        Account gewijzigdAccount = new Account();
+        gewijzigdAccount = (Account)accountDao.readById(account.getId());
         if (gewijzigdAccount!= null){
             gewijzigdAccount.setKlant(account.getKlant());
             gewijzigdAccount.setPassword(account.getPassword());

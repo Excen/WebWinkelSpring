@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
  */
 @Controller
 @RequestMapping({"/", "/home"}) // wat doet dit specifiek?
-@SessionAttributes("roles")
+@SessionAttributes()
 public class HomeController {
 
 private static final Logger log = LoggerFactory.getLogger(HomeController.class);

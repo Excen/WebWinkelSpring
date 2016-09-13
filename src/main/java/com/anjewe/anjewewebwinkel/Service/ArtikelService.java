@@ -11,14 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
-@Component
-public class ArtikelService extends ArtikelDao implements GenericServiceInterface <Artikel, Long> {  
-    
-    public ArtikelService (){
-        
-    }
+@Service
+@Transactional
+public class ArtikelService implements GenericServiceInterface <Artikel, Long> {  
     
     private static final Logger logger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel");
     private static final Logger errorLogger = (Logger) LoggerFactory.getLogger("com.anjewe.anjewewebwinkel.err");
@@ -42,13 +41,13 @@ public class ArtikelService extends ArtikelDao implements GenericServiceInterfac
 
     @Override
     public Long voegNieuweBeanToe(Artikel artikel) {
-         long id = artikelDao.insert(artikel);  
+         long id = (Long)artikelDao.insert(artikel);  
          return id; 
     }
     
     @Override
     public Artikel zoekNaarBean(Long Id) {
-        artikel = artikelDao.readById(Id);
+        artikel = (Artikel)artikelDao.readById(Id);
         return artikel;
     }
 
@@ -72,7 +71,7 @@ public class ArtikelService extends ArtikelDao implements GenericServiceInterfac
     @Override
     public Artikel wijzigBeanGegevens(Artikel artikel) {
         
-        gewijzigdArtikel= artikelDao.readById(artikel.getId());
+        gewijzigdArtikel= (Artikel)artikelDao.readById(artikel.getId());
         if (gewijzigdArtikel!= null){
             gewijzigdArtikel.setArtikelNaam(artikel.getArtikelNaam());
             gewijzigdArtikel.setArtikelPrijs(artikel.getArtikelPrijs());

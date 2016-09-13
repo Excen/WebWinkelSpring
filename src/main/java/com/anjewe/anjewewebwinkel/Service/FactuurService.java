@@ -13,12 +13,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Wendy
  */
-@Component
-public class FactuurService extends FactuurDao implements GenericServiceInterface <Factuur, Long>{
+@Service
+@Transactional
+public class FactuurService implements GenericServiceInterface <Factuur, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
@@ -28,7 +30,7 @@ private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
     @Autowired
     Factuur gewijzigdeFactuur;   
     @Autowired
-    GenericDaoImpl<Factuur, Long> factuurDao;  
+    GenericDaoImpl<Factuur, Long> factuurDao = new FactuurDao();  
     
    
        
@@ -71,7 +73,7 @@ private static final Logger log = LoggerFactory.getLogger(FactuurService.class);
 
     @Override // wat hier wel niet willen en kunnen wijzigen. ook ivm onderlinge relaties
     public Factuur wijzigBeanGegevens(Factuur factuur) {
-       gewijzigdeFactuur = factuurDao.readById(factuur.getId());
+       gewijzigdeFactuur = (Factuur)factuurDao.readById(factuur.getId());
         if (gewijzigdeFactuur!= null){
             gewijzigdeFactuur.setKlant(factuur.getKlant());
             gewijzigdeFactuur.setFactuurnummer(factuur.getFactuurnummer());

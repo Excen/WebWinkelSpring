@@ -12,17 +12,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Wendy
  */
-@Component
-public class BetalingService extends BetalingDao implements GenericServiceInterface<Betaling, Long>{
+@Service
+@Transactional
+public class BetalingService implements GenericServiceInterface<Betaling, Long>{
 
 private static final Logger log = LoggerFactory.getLogger(BetalingService.class);
 
     @Autowired 
-    GenericDaoImpl <Betaling, Long> betalingDao;  
+    GenericDaoImpl <Betaling, Long> betalingDao = new BetalingDao();  
     @Autowired
     Betaling betaling;  
     @Autowired
@@ -68,7 +71,7 @@ private static final Logger log = LoggerFactory.getLogger(BetalingService.class)
     @Override
     public Betaling wijzigBeanGegevens(Betaling betaling) {
         
-        gewijzigdeBetaling = betalingDao.readById(betaling.getId());
+        gewijzigdeBetaling = (Betaling)betalingDao.readById(betaling.getId());
         if (gewijzigdeBetaling!= null){
             gewijzigdeBetaling.setBetalingsGegevens(betaling.getBetalingsGegevens());
             gewijzigdeBetaling.setFactuur(betaling.getFactuur());

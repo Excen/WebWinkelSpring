@@ -7,12 +7,17 @@ package com.anjewe.anjewewebwinkel.DAOs;
 
 import com.anjewe.anjewewebwinkel.DAOGenerics.GenericDaoImpl;
 import com.anjewe.anjewewebwinkel.POJO.Adres;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author Anne
  */
-public abstract class AdresDao extends GenericDaoImpl <Adres, Long> {
+@Repository
+@Transactional
+public class AdresDao extends GenericDaoImpl <Adres, Long> {
     
     public AdresDao() {
         super();

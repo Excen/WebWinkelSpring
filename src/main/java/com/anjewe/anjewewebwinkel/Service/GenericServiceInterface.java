@@ -5,9 +5,11 @@
  */
 package com.anjewe.anjewewebwinkel.Service;
 
-import com.anjewe.anjewewebwinkel.Controller.*;
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -16,9 +18,13 @@ import java.util.List;
  * @param <PK>
  * @param <Long>
  */
+@Service
+@Transactional
 public interface GenericServiceInterface <T, PK extends Serializable> {
     
+     
     //invoer - opslaan
+    
     public T voegNieuweBeanToe(Long Id);
     public Long voegNieuweBeanToe(T t);
     

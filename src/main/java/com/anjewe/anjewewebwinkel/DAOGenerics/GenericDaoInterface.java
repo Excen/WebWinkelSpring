@@ -8,6 +8,8 @@ package com.anjewe.anjewewebwinkel.DAOGenerics;
 
 import java.io.Serializable;
 import java.util.List;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -18,7 +20,7 @@ import java.util.List;
  */
 
 // PK primary key
-
+@Service
 public interface GenericDaoInterface <T, PK extends Serializable>{
    
     // alle dao methoden? 
