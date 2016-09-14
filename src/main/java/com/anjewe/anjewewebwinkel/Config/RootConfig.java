@@ -80,7 +80,7 @@ public DataSource dataSource() throws SQLException{
 
 
     // SessionFactory Bean
-@Bean
+@Bean (name = "sessionBean")
     public LocalSessionFactoryBean sessionFactory() throws SQLException {
     LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
     sessionFactory.setDataSource(dataSource());

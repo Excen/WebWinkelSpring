@@ -5,10 +5,10 @@ package com.anjewe.anjewewebwinkel.DAOGenerics;
 
 
 
+
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,10 +16,9 @@ import org.hibernate.SessionFactory;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger; 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
-
+//import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -36,11 +35,12 @@ public abstract class GenericDaoImpl <T, PK extends Serializable> {
     // data fields //
     protected Class<T> beanType;
     
+    
     @Autowired 
     private SessionFactory sessionFactory;
     
     @Bean(name="sessionBean") 
-    protected Session getSession() {
+    protected Session getSession() {        
         return sessionFactory.getCurrentSession();
     }
     
